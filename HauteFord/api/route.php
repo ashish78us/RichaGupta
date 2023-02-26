@@ -2,7 +2,7 @@
 $api_path = 'api/route/';
 
 $route = parse_url($_SERVER['REQUEST_URI']);
-//var_dump($route);
+//var_dump($route);//testing first commit to github server
 if  (str_contains($route['path'], $api_path)) {
     
     // auto load classes
