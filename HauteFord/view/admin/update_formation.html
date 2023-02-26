@@ -1,0 +1,31 @@
+<h3><a href="#formation-update-collapse" data-bs-toggle="collapse" role="button" class="text-decoration-none">' . update</h3>
+    <div class="collapse" id="formation-update-collapse">
+       <form action="index.php?view=api/formation/update" method="post" enctype="multipart/form-data">>
+      <input type="hidden" id="uu-formationid" name="id" value="' $data->id '">
+           <label for="uu-name">name </label>
+           <input type="name" id="uu-name" name="name" class="form-control" value="' . $data->name . '">
+           <label for="uu-niveau_etude">niveau_etude  </label>
+           <input type="text" id="uu-niveau_etude" name="niveau_etude" class="form-control" value="' . $data->niveau_etude . '">
+           <label for="uu-status">status</label>
+           <div class="form-check">
+     <input class="form-check-input" type="checkbox" value="" id="uu-status-active"class="form-control" value="' .  ($data->status === 'active' ? 'checked' : '') . '"> >
+<label class="form-check-label" for="uu-status-active">
+              Active
+              </label>
+</div>
+<div class="form-check">
+     <input class="form-check-input" type="checkbox" value="" id="uu-status-inactive"class="form-control" value="' .  ($data->status === 'inactive' ? 'checked' : '') .  '"> >
+<label class="form-check-label" for="uu-status-inactive">
+              Active
+              </label>
+</div>
+<label for="uu-date_debut">date_debut</label>
+           <input type="date" id="uu-date_debut" name="date_debut" class="form-control" value="' . $data->date_debut . '">
+           
+           <label for="uu-date_fin">date_fin</label>
+           <input type="date" id="uu-date_fin" name="date_fin" class="form-control" value="' . $data->date_fin . '">
+         <input type="submit" class="btn btn-primary" value="' . Text::getStringFromKey('submit') . '">
+                </form>
+                </div>';
+
+}            

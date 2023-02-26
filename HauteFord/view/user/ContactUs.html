@@ -1,0 +1,88 @@
+<style>
+#contact{
+  
+    background: #efefef;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    color : rgb(14, 5, 5);
+  
+}
+#contact h1{
+  font-size: 100px;
+  background: url(image/téléchargement.jpg);
+    text-align:center;
+    text-decoration:none;
+}
+
+.form-cantrol{
+    margin-top: 20px;
+    border-radius: 0!important;
+    border:none !important;
+    width: 350px;
+
+}
+::placeholder{
+    color: #999 !important;
+}
+.follow{
+    background: #fff;
+    padding: 10px;
+    margin: 15px;
+}
+.contact-info .fa{
+    margin:10px;
+    color:brown;
+    font-weight: bold;
+}
+#map{
+    width: 100%;
+    height: 70vh;
+    margin-bottom: 7vh;
+}
+#map iframe{
+    width: 100%;
+    height :100%;
+}
+</style>
+
+<form action="index.php?view=api/user/ContactUs"></form>
+<section id="contact">
+    <div class="container">
+   <h1> Contact Us</h1>
+        <div class="row">
+          <div class="col-md-6">
+            <form class="contact-form">
+              <div class="form-group">
+                <input type="text" class="form-cantrol" placeholder="Votre Nom">
+             
+              </div>
+              <div class="form-group">
+                <input type="number" class="form-cantrol" placeholder="Votre Téléphone">
+              </div>
+              <div class="form-group">
+                <input type="email" class="form-cantrol" placeholder="Votre Email">
+              </div>
+              <div class="form-group">
+                <textarea class="form-cantrol" rows="4" placeholder="Message"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">ENVOYER</button>
+            </form>
+          </div>
+          <div class="col-md-6 contact-info">
+         <div class="follow"><b>HauteFord</b></div>
+        <div class="follow"><b>Address:</b><i class="fa fa-map-marker"></i>Boucle Jean-François Breuer 19, Mont-Saint-Guibert</div>
+        <div class="follow"><b>Telephone:</b><i class="fa fa-phone"></i>0479 88 23 56</div>
+      <div class="follow"><b>E-mail:</b><i class="fa fa-envelope-o"></i>info@webplanet.be</div>
+      <div class="follow"><label><b>Get Social:</b></label>
+        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-google-plus"></i></a>
+        <a href="#"><i class="fa fa-youtube-play"></i></a>
+      </div>
+      </div>
+    </div>
+      </div>
+    </section>
+    <section id="map">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.8237722042545!2d2.3085491158806772!3d48.86157077928779!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66fd9fbc2387f%3A0x8dbd19a2be59da24!2sAmerican%20University%20of%20Paris!5e0!3m2!1sfr!2sbe!4v1672929879037!5m2!1sfr!2sbe" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>

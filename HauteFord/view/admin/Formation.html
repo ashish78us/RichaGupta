@@ -1,0 +1,55 @@
+<head>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          // get the active and inactive checkboxes
+          const activeCheckbox = document.getElementById("flexSwitchCheckDefault");
+          const inactiveCheckbox = document.getElementById("flexSwitchCheckInactive");
+    
+          // when the active checkbox is clicked, uncheck the inactive checkbox
+          activeCheckbox.addEventListener("click", function() {
+            inactiveCheckbox.checked = false;
+          });
+    
+          // when the inactive checkbox is clicked, uncheck the active checkbox
+          inactiveCheckbox.addEventListener("click", function() {
+            activeCheckbox.checked = false;
+          });
+        });
+      </script>
+</head>
+<h1>Create Formation</h1>
+<form action="index.php?view=api/formation/create_formation" method="post">
+    <div class="container">
+        <h1>Create Formation</h1>
+        
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="niveau_etude">Niveau d'étude</label>
+                <input type="text" class="form-control" id="niveau_etude" name="niveau_etude" required>
+            </div>
+            <div class="form-group form-check form-switch">
+                <input class="status-checkbox" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="status" value="active" checked>
+                <label class="form-check-label" for="status">Active</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="Status" type="checkbox" role="switch" id="flexSwitchCheckInactive" name="status" value="inactive">
+                <label class="Status" for="flexSwitchCheckInactive">Inactive</label>
+              </div>
+            <div class="form-group">
+                <label for="date_debut">Date de début</label>
+                <input type="date" class="form-control" id="date_debut" name="date_debut" required>
+            </div>
+            <div class="form-group">
+                <label for="date_fin">Date de fin</label>
+                <input type="date" class="form-control" id="date_fin" name="date_fin" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+   
+</body>
+                
+
+</div>

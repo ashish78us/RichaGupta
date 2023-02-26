@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD `colorid` int(10) unsigned AFTER `lang`;

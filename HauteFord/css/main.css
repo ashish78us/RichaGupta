@@ -1,0 +1,16 @@
+.navbar-brand img{
+    height: 50px;
+    padding: left 20px;
+
+}
+
+.bgblue {
+    background-color: lightsteelblue;
+}
+.bgyellow {
+    background-color: lightgoldenrodyellow;
+}
+
+#profile-photo {
+    max-height: 200px;
+}

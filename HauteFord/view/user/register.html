@@ -1,0 +1,160 @@
+<style>
+  *{
+    padding:0;
+    margin:0;
+    box-sizing:border-box;
+    font-family: sans-serif;
+  }
+body{
+ 
+  justify-content: center;
+  align-items: center;
+  background: url(image/background.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.container{
+  width: 100%;
+  max-width: 650px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 28px;
+  border-radius: 10px;
+  box-shadow: inset -2px 2px 2px white;
+}
+.form-title{
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+  padding:6px;
+  color: white;
+  text-shadow: 2px 2px 2px black;
+  border-bottom: solid 1px white;
+}
+.main-user-info{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+.user-input-box:nth-child(2n){
+  justify-content: end;
+}
+.user-input-box{
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+  padding-bottom: 10px;
+}
+.user-input-box label{
+  width: 95%;
+  color: white;
+  font-size: 20px;
+  font-weight: 400;
+  margin: 5px 0;
+  text-align: center;
+}
+.user-input-box input{
+  height: 40px;
+  width: 95%;
+  border-radius: 7px;
+  outline: none;
+  border: 1px solid gray;
+  padding: 0 10px;
+}
+.user-input-photo label{
+  width: 95%;
+  color: white;
+  font-size: 20px;
+  font-weight: 400;
+  margin: 5px 0;
+  text-align: center;
+}
+.user-input-photo input{
+  height: 40px;
+  width: 95%;
+  padding: 0 10px;
+  border-radius: 7px;
+  outline: none;
+  
+}
+.form-submit-btn{
+  margin-top: 40px;
+}
+.form-submit-btn input{
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  font-size: 20px;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  color: rgb(209 209 209);
+  background: rgba(63,114,76, 0.7);
+}
+
+
+
+
+</style>
+  
+<form action="index.php?view=api/user/create" method="post" enctype="multipart/form-data">
+  <body>
+   <div class ="container">
+ <h1 class ="form-title"> Student Registeration Form</h1> 
+    <div class="main-user-info">
+      <div class ="user-input-box">
+    <label for="login">Identifiant</label>
+    <input type="text" id="login" name="login" placeholder ="Enter Username"class="form-control" required>
+    </div>
+    <div class ="user-input-box">
+    <label for="password">Mot de passe</label>
+    <input type="password" id="password" name="password" placeholder ="Enter Password"class="form-control" required>
+    </div>  
+    <div class ="user-input-box">
+    <label for="nom">Nom</label>
+  <input type="text"  id="nom" name="nom" placeholder ="Enter Nom" class="form-control" required>
+      </div>
+      <div class ="user-input-box">
+        <label for="prenom">Prenom</label>
+        <input type="text"  id="prenom" name="prenom" placeholder ="Enter Prenom" class="form-control" required> 
+  </div>
+  <div class ="user-input-box">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder ="Enter Email"class="form-control" required>
+    </div>
+    <div class ="user-input-box">
+    <label for="pays">Nationalité</label>
+    <select name="pays" id="pays" name="pays" placeholder ="Select the Nationalité" class="form-control" required>
+        <option value="Belge" selected>Belge</option>
+        <option value="Candian">Candian</option>
+        <option value="Indian">Indian</option>
+        <option value="Russian">Russian</option>
+        <option value="Italian">Italian</option>
+        <option value="German">German</option>
+    </select>
+  </div>
+  <div class ="user-input-box">
+    <label for="birthdate">Date de naissance</label>
+    <input type="date" id="birthdate" name="birthdate" placeholder ="Enter birthdate" class="form-control" required>
+  </div>
+       <div class ="user-input-box">
+       <label for="phone">phone number:</label>
+       <input type="text" name="country code" placeholder="Country Code"  value="+32" size="2"/> 
+<input type="tel" id="phone" name="phone" placeholder ="Enter téléphone" class="form-control" required>
+</div>
+<div class ="user-input-box">
+  <label for="address">Complete Address</label> 
+  <input type="text" id="address" name="address" placeholder ="Enter address" class="form-control" required> 
+</textarea> 
+</div>
+<div class ="user-input-photo">
+ <label for="photo">Photo</label>
+    <p><input type="file" id="photo" name="photo"></p>
+    </div>
+    <div class ="form-submit-btn">
+    <input type="submit" class="btn btn-primary" value="Valider">
+    </div>
+   </body>
+    </form>
+    </div>
+
