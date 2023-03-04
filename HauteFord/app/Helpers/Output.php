@@ -23,15 +23,19 @@ class output
         $exts = ['html', 'php'];
         // use of SUPER GLOBAL variable ($_SERVER)
         $route = parse_url($_SERVER['REQUEST_URI']);
+        //var_dump($route);
         
         // use of new str_contains php core function (php 8.0+)
         if (str_contains($route['query'], 'view=api/')) {
+            //var_dump("Inside first IF");
             $params = [];
             // useful explode function (split a string by a string)
             $elements = explode('/', rtrim($route['query'], '/'));
             //var_dump("elements=".$elements);
             // foreach control structure (alternative syntax : key | value)
             foreach ($elements as $key => $value) {
+                //var_dump("key=".$key);
+                //var_dump($value);
                 if ($key == 1) {
                     // php concatenation
                     $class = 'app\Controllers\\' . ucfirst($value);
@@ -41,7 +45,7 @@ class output
                     // goto next loop iteration
                     continue;
                 } else {
-                    // array push
+                    // array push....value of key[3]
                     $params[] = $value;
                     //var_dump("value=".$value);
                 }
@@ -49,10 +53,12 @@ class output
                 //var_dump("method=".$method);
             }
             if (!empty($class) && !empty($method)) {
+                //var_dump("Inside sub-first IF");
                 // use object without "use" keyword
                 // Reflection API : https://www.php.net/manual/fr/book.reflection.php
                 $r = new \ReflectionMethod($class, $method);
                 $nbr = $r->getNumberOfParameters();
+                //var_dump("Number of parameters=".$nbr);
                 if ($nbr != count($params)) {
                     // php core Exception
                     throw new \Exception('Parameters count mismatch');
@@ -61,10 +67,13 @@ class output
                 $controller = new $class();
                 // check if method exists
                 is_callable($method, true, $callable_name);
+                //var_dump($controller);
+                //var_dump("$callable_name");
                 // method call with parameters (specific php syntax)
                 $controller->{$callable_name}(...array_values($params));
             }
         } elseif (!empty($view)) {
+            //var_dump("Inside first IF elseif");
             foreach ($exts as $ext) {
                 // php concatenation
                 $complete_path = $view . '.' . $ext;
@@ -95,6 +104,7 @@ class output
     public static function render(string $template, object|array|string $data, string $class = 'danger')
     {
         echo Bootstrap::$template($data, $class);
+        
     }
     public static function render2(string $template, object|array|string $data, string $class = 'user')
     {

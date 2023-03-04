@@ -254,6 +254,7 @@ class User extends Controller
         if (!empty($_POST['login']) && !empty($_POST['password'])) {
             // Appel à la method du Model récupérant, sous forme d'objet, l'utilisateur dont le username correspond au login (purgé des éventuels espaces)
             $user = $this->model->getByField('username', trim($_POST['login']));
+            
             if (!$user) {
                 Output::createAlert('Cet utilisateur n\'existe pas!', 'danger', 'index.php?view=view/user/login');
             }
@@ -304,7 +305,8 @@ class User extends Controller
         Access::checkProfile($id);
 
         //récupération du record en DB correspondant à l'id fourni
-        $user = $this->getForProfile($id);
+        //$user = $this->getForProfile($id);
+        $user = $this->get($id);
 
         // formattage des données pour l'affichage du profil
         $userForProfile = self::formatForProfile($user);
@@ -423,11 +425,12 @@ class User extends Controller
     {
         // récupération du record en DB correspondant à l'id fourni
         $user = $this->get($id);
+        //var_dump($this);
         // Ajout de l'information sur le compte.
         // Pour ce faire, on instancie le Controller associé et on récupère les données depuis le Model
         // Afin de n'affecter que le montant, on extrait la propriété de l'objet du résultat via le chaînage de méthodes (method chaining) ou dans ce cas de propriété de classe
         $account = new Account();
-        $user->account = $account->model->getByField('userid', $user->id)->amount;
+        //$user->account = $account->model->getByField('userid', $user->id)->amount;
         //var_dump($account->model->getByField('userid', $user->id)->amount);//null value returned
         //var_dump($account->model->getByField('userid', $user->id));///returned false...this is the problem
 
@@ -461,7 +464,7 @@ class User extends Controller
             $userForProfile->lastlogin = date_format( new \DateTime($userForProfile->lastlogin),"d/m/Y H\hi");
         }
         // Redéfinition d'une nouvelle propriété de classe sur base d'une existante, et suppression de l'ancienne
-        $userForProfile->amount = $user->account . '€';
+        //$userForProfile->amount = $user->account . '€';
         unset($userForProfile->account);
 
         return $userForProfile;

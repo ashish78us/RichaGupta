@@ -19,9 +19,11 @@ abstract class Controller
      */
     public function __construct(int $id = null)
     {
+        //var_dump("Inside __construct");
         $class = get_called_class();
         $data = explode('\\', $class);
         $class = '\app\Models\\' . end($data);
+        //var_dump("model=".$class);
         $this->model = new $class();
         self::$static_model = $this->model;
         if (!empty($id)) {
@@ -38,6 +40,7 @@ abstract class Controller
      */
     public function get(int $id): mixed
     {
+        var_dump($this);
         return $this->model->getByField('id', $id);
     }
 

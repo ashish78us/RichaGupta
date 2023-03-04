@@ -58,6 +58,25 @@ class Formation extends Model
             return false;
         }
     }
+    public static function getById($id)
+    {
+        //var_dump($id);
+        //return "Inside Formation Model getById";
+        
+        $sql = 'SELECT f.id,
+        f.name,
+       f.niveau_etude ,
+       f.status,
+        f.date_debut,
+       f.date_fin
+        from formation f where f.id=? ORDER BY f.id';
+
+        $request = self::$connect->prepare($sql);
+        $request->execute([$id]);
+        $formationResultById=$request->fetchObject();
+        
+        return $formationResultById;
+    }
 
     }
 

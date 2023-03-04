@@ -141,18 +141,7 @@ abstract class Model
         $request->execute($params);
         return $request->rowCount();
     }
-
-    public static function update2(object $object): int
-    {    
-        $class_new= new $classname();
-        $params[1] = $id;
-        $params[0] = $id->name;
-        $query = "UPDATE " . $classname . " SET $fieldname = $id->name  WHERE id = $id";
-        var_dump("query=".$query);
-        $request = self::$connect->prepare($query);
-        $request->execute();
-        return $request->rowCount();
-    }
+    
 
     public static function raw(string $sql, array $params = [], string $fetch = 'RESULT'): mixed
     {

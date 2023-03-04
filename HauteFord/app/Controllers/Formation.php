@@ -6,8 +6,13 @@ use app\Helpers\Output;
 use app\Helpers\Access;
 use app\Helpers\Text;
 
+
 class Formation extends Controller
 {
+
+    public function __construct() {
+        parent::__construct();
+    }
     public  function create_formation(): void {
         if (!$_POST) {
             header('HTTP/1.1 405');
@@ -20,11 +25,7 @@ class Formation extends Controller
             'date_debut' => $_POST['date_debut'],
             'date_fin' => $_POST['date_fin']   ];
 
-            $formationid = $this->model->create_formation($formation_data);
-           
-        
-
-    
+            $formationid = $this->$model->create_formation($formation_data);
         }
         else {
             // Redirection vers le formulaire de signup
@@ -32,40 +33,9 @@ class Formation extends Controller
             die;
         }
 
+        }
     
-    }
-
     
-    public function update($id)
-    
-    {
-       
-       $update=true;       
-        $formation = $this->get($id);      
-    
-         //  var_dump($update);
-          if($update){
-        Output::render('update_formation', $formation);
-        }    
-
-    }
-
-    public function update_row(array $formation)
-    
-    {
-        //var_dump("id=".$id);
-       //var_dump("inside update_row");
-       //var_dump("sessionID=".$_SESSION['formationid']);
-
-       $this->model->update($formation);
-
-       
-        
-        //Output::createAlert('Update Success', 'success', 'index.php?view=api/formation/formationList/' . $user->id);
-
-       
-
-    }
 
 
     protected function getForFormation(int $id): mixed
@@ -111,5 +81,14 @@ class Formation extends Controller
         
        
     }
+    public function update($id): void
+    {       
+        $formationById = $this->model->getById($id);
+        //var_dump($formation->name);
+
+        Output::render('update_formation', $formationById);  
+       
+    }
+
 }
 

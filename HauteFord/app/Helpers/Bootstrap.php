@@ -412,7 +412,7 @@ class Bootstrap
 
             }
             $hyper_link ="<a href=\"index.php?view=api/Formation/update/";
-            $hyper_link .= $row;
+            $hyper_link .= $id;
             //var_dump("row=".$row);
             $hyper_link .="\">UPDATE</a>";
             //var_dump($hyper_link);
@@ -540,16 +540,18 @@ class Bootstrap
     }
 
 
-    public static function update_formation(object $data) {
+    public static function update_formation($data) {
       // var_dump("inside bootstrap-update_formation");
        //include_once ROOT_PATH . '/view/admin/menu.html';
        //$_SESSION['formationid']=$data->id;
        //$formationid=$_SESSION['formationid'];
-       $formationid=$data->id;
+
+       $formationid=$data;
+       //var_dump($formationid->name);
 
        return '<hr>
        
-       <form action="index.php?view=api/formation/update_row/' . $data  . '" method="post" enctype="multipart/form-data">
+       <form action="index.php?view=api/formation/update_row/' . $data->id  . '" method="post" enctype="multipart/form-data">
        
        <div class="cantainer">
        <h1 class ="form-title">Update_formation</h1> 
