@@ -540,14 +540,18 @@ class Bootstrap
     }
 
 
-    public static function update_formation($data) {
-      // var_dump("inside bootstrap-update_formation");
-       //include_once ROOT_PATH . '/view/admin/menu.html';
-       //$_SESSION['formationid']=$data->id;
-       //$formationid=$_SESSION['formationid'];
+    public static function update_formation($data) {     
 
-       $formationid=$data;
-       //var_dump($formationid->name);
+       $formationid=$data; 
+       if ($data->status == 'Active'){
+       $active="checked"; 
+       $inactive=""; 
+       }    
+       else  
+       {
+        $active=""; 
+        $inactive="checked"; 
+    }
 
        return '<hr>
        
@@ -569,14 +573,12 @@ class Bootstrap
      <div class ="formation-input-box">
                <label for="uu-status">' . Text::getStringFromKey('status') . '</label>
 <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="active" id="uu-status-active"class="form-control" value="' .  ($data->status == 'active' ? 'checked' : '') . '"> 
+         <input class="form-check-input" type="checkbox"  id="uu-status-active" class="form-control" value="" '. $active.'> 
     <label class="form-check-label" for="uu-status-active"> Active</label>
 </div>
 <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="Inactive" id="uu-status-inactive"class="form-control" value="' .  ($data->status == 'inactive' ? 'checked' : '') .  '"> 
-    <label class="form-check-label" for="uu-status-inactive">
-                Inactive
-                  </label>
+         <input class="form-check-input" type="checkbox" id="uu-status-inactive" class="form-control" value="" '. $inactive.'> 
+    <label class="form-check-label" for="uu-status-inactive">Inactive</label>
 </div>
 </div>
 <div class ="formation-input-box">
