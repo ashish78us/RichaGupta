@@ -128,15 +128,18 @@ abstract class Model
     {
         
         if (empty($object->id)) {
-            var_dump("inside update and if");
+            //var_dump("inside update and if");
             return false;
         }
         $params = array_values(get_object_vars($object));
         $params[] = $object->id;
         //var_dump("update=".$object->id);
+        //foreach ( $params as $key => $value) {
+          //  var_dump("Key=".$key." "."Value=".$value);
+        //}
         $setFields = self::getSelectFields($object, ',', ' = ?');
         $query = "UPDATE " . self::getClassName() . " SET $setFields WHERE id = ?";
-        var_dump("query=".$query);
+        //var_dump("query=".$query);
         $request = self::$connect->prepare($query);
         $request->execute($params);
         return $request->rowCount();
@@ -233,6 +236,22 @@ abstract class Model
             $nbr++;
         }
         return $return;
+    }
+
+    static function setColumnsValueFromView($id): Object
+    {
+        $columns = [];
+        $cols = self::$connect->query("DESCRIBE " . self::getClassName(), PDO::FETCH_OBJ);
+        foreach ($cols as $col) {
+            $columns[] = $col->Field;
+        }
+        //var_dump($_POST);
+        foreach ($columns as $col => $value) {            
+            if(!empty($_POST[$value]))
+            $id->$value = $_POST[$value];
+           // var_dump( $value."=". $_POST[$value]);
+        }
+        return $id;
     }
 
 }

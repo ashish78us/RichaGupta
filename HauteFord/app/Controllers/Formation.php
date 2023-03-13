@@ -89,6 +89,22 @@ class Formation extends Controller
         Output::render('update_formation', $formationById);  
        
     }
+    public function update_row($id): void
+    {       
+        $formationObjectById = $this->model->getById($id);
+        //$formationObjectById->name = $_POST['name'];
+        if (!empty($_POST['active'])=="checked"){$formationObjectById->status="Active";}
+        if (!empty($_POST['inactive'])=="checked"){$formationObjectById->status="Inactive";}
+        //var_dump($_POST);
+        $formationObjectById=$this->model->setColumnsValueFromView($formationObjectById);       
+
+        //var_dump($formationObjectById->name);
+        $formationUpdateById = $this->model->update($formationObjectById);
+    
+        
+        Output::render('update_formation', $formationObjectById);  
+       
+    }
 
 }
 

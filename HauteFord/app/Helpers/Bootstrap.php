@@ -545,11 +545,11 @@ class Bootstrap
        $formationid=$data; 
        if ($data->status == 'Active'){
        $active="checked"; 
-       $inactive=""; 
+       $inactive="unchecked"; 
        }    
        else  
        {
-        $active=""; 
+        $active="unchecked"; 
         $inactive="checked"; 
     }
 
@@ -571,20 +571,21 @@ class Bootstrap
                
      </div>
      <div class ="formation-input-box">
-               <label for="uu-status">' . Text::getStringFromKey('status') . '</label>
+               <label for="uu-status">' . Text::getStringFromKey('status info') . '</label>
 <div class="form-check">
-         <input class="form-check-input" type="checkbox"  id="uu-status-active" class="form-control" value="" '. $active.'> 
-    <label class="form-check-label" for="uu-status-active"> Active</label>
+         <input class="form-check-input" name="active" type="checkbox"  id="active1" class="form-control" value="'.$active.'"' . $active . '> 
+    <label class="form-check-label" for="active1">Active</label>
 </div>
 <div class="form-check">
-         <input class="form-check-input" type="checkbox" id="uu-status-inactive" class="form-control" value="" '. $inactive.'> 
-    <label class="form-check-label" for="uu-status-inactive">Inactive</label>
+         <input class="form-check-input" name="inactive" type="checkbox" id="inactive1" class="form-control" value="'.$inactive.'"'. $inactive.'> 
+    <label class="form-check-label" for="inactive1">Inactive</label>
 </div>
 </div>
 <div class ="formation-input-box">
 <label for="uu-date_debut">' . Text::getStringFromKey('date_debut') . '</label>
   <input type="date" id="uu-date_debut" name="date_debut" class="form-control" value="' . $data->date_debut . '">
   </div>
+  
   <div class ="formation-input-box">
   <label for="uu-date_fin">' . Text::getStringFromKey('date_fin') . '</label>
   <input type="date" id="uu-date_fin" name="date_fin" class="form-control" value="' . $data->date_fin . '">
