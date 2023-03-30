@@ -9,11 +9,11 @@ class Course extends Model
      * @param string $orderby
      * @return array
      */
-    public static function createCourse(array $data): int
+    public static function createNewCourse($course_data): int
     {
         
         $insert = self::$connect->prepare("INSERT INTO Course (name, code, status) VALUES (?, ?, ?)");
-        $insert->execute(array_values($data));
+        $insert->execute(array_values($course_data));
         if ($insert->rowCount()) {
             // retourne l'id du champ créé en DB par l'INSERT
             return self::$connect->LastInsertId();

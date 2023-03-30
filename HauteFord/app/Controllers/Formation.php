@@ -5,7 +5,7 @@ use app\Helpers\Helper;
 use app\Helpers\Output;
 use app\Helpers\Access;
 use app\Helpers\Text;
-
+use app\Helpers\Bootstrap;
 
 class Formation extends Controller
 {
@@ -92,11 +92,14 @@ class Formation extends Controller
     public function update_row($id): void
     {       
         $formationObjectById = $this->model->getById($id);
-        //$formationObjectById->name = $_POST['name'];
-        if (!empty($_POST['active'])=="checked"){$formationObjectById->status="Active";}
-        if (!empty($_POST['inactive'])=="checked"){$formationObjectById->status="Inactive";}
-        //var_dump($_POST);
-        $formationObjectById=$this->model->setColumnsValueFromView($formationObjectById);       
+       // $formationObjectById->name = $_POST['status'];
+        
+        
+        $formationObjectById=$this->model->setColumnsValueFromView($formationObjectById); 
+        if (!empty($_POST['status'])=="checked"){$formationObjectById->status="Active";}
+        if (!empty($_POST['status'])=="unchecked"){$formationObjectById->status="Inactive";}  
+        var_dump($_POST);
+        var_dump($formationObjectById->status);    
 
         //var_dump($formationObjectById->name);
         $formationUpdateById = $this->model->update($formationObjectById);

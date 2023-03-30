@@ -106,9 +106,9 @@ class output
         echo Bootstrap::$template($data, $class);
         
     }
-    public static function render2(string $template, object|array|string $data, string $class = 'user')
+    public static function render2(string $template, object|array|string $data, object|array|string $data2)
     {
-        echo Bootstrap::$template($data, $class);
+        echo Bootstrap::$template($data, $data2);
     }
 
     /**

@@ -11,6 +11,7 @@ abstract class Model
 
     public function __construct()
     {
+       // var_dump("inside model super");
         global $connect;
 
         if (!$connect) {

@@ -502,41 +502,52 @@ class Bootstrap
         }
         echo $output;
     }
-    public static function createCourse(array $course_data)
+    public static function createCourse(array $data_formation, array $data_course)
     {
-       include_once ROOT_PATH . '/view/admin/menu.html';
-
-        return '<form action="index.php?view=api/course/createCourse" method="post">
-        <h1>Create Course</h1>
-        <div class="form-group">
+        include_once ROOT_PATH . '/view/admin/menu.html';
+        return '<h2>Création d\'un nouveau cours</h2>
+                <form action="index.php?view=api/Course_formation/create/" method="post">
                     <label for="cc-formation">Formation</label>
-                   
                     <select name="cc-formation" id="cc-formation" class="form-control">
-                    ' . self::getFormOptions($data) . '
+                    ' . self::getFormOptions($data_formation) . '
                     </select>
-                </div>
-               
+                    <div class ="course-input-box">
+                    <label for="cc-course">Course</label>
+                    <select name="cc-course" id="cc-course" class="form-control">
+                    ' . self::getFormOptions($data_course) . '
+                    </select>                    
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </form>';
+    }
+
+    public static function createNewCourse()
+    {
+        include_once ROOT_PATH . '/view/admin/menu.html';
+        return '<h1>Create Course</h1>
+<form action="index.php?view=api/course/cr_new_course/" method="post">
+    <div class="container">
        <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+                <input type="text" id="name" name="name" class="form-group" value="">
+                </div>
             </div>
             <div class="form-group">
-                <label for="code">code</label>
-                <input type="text" class="form-control" id="code" name="code" required>
+                <label for="code">Code</label>
+                <input type="text" id="code" name="code" class="form-group" value="">
+                </div>
             </div>
-            <div class="form-group form-check form-switch">
-                <input class="status-checkbox" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="status" value="active" checked>
-                <label class="form-check-label" for="status">Active</label>
-            </div>
-            <div class="form-check form-switch">
-                <input class="Status" type="checkbox" role="switch" id="flexSwitchCheckInactive" name="status" value="inactive">
-                <label class="Status" for="flexSwitchCheckInactive">Inactive</label>
-              </div>
-            
-                 <div>
-                    <input type="submit" class="btn btn-warning">
-                    </div>
-                </form>';
+            <div class="form-check">
+         <input class="form-check-input" name="status" type="radio"  id="active" class="form-control" value="active"> 
+    <label class="form-check-label" for="active">Active</label>
+</div>
+<div class="form-check">
+         <input class="form-check-input" name="status" type="radio" id="inactive" class="form-control" value="inactive"> 
+    <label class="form-check-label" for="inactive">Inactive</label>
+</div>
+           <button type="submit" class="btn btn-primary">Create</button>
+        </form>';
+   
     }
 
 
@@ -573,12 +584,12 @@ class Bootstrap
      <div class ="formation-input-box">
                <label for="uu-status">' . Text::getStringFromKey('status info') . '</label>
 <div class="form-check">
-         <input class="form-check-input" name="active" type="checkbox"  id="active1" class="form-control" value="'.$active.'"' . $active . '> 
-    <label class="form-check-label" for="active1">Active</label>
+         <input class="form-check-input" name="status" type="radio"  id="active" class="form-control" value="'.$active.'"' . $active . '> 
+    <label class="form-check-label" for="active">Active</label>
 </div>
 <div class="form-check">
-         <input class="form-check-input" name="inactive" type="checkbox" id="inactive1" class="form-control" value="'.$inactive.'"'. $inactive.'> 
-    <label class="form-check-label" for="inactive1">Inactive</label>
+         <input class="form-check-input" name="status" type="radio" id="inactive" class="form-control" value="'.$inactive.'"'. $inactive.'> 
+    <label class="form-check-label" for="inactive">Inactive</label>
 </div>
 </div>
 <div class ="formation-input-box">

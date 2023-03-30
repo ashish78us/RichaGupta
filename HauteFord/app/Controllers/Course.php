@@ -89,27 +89,36 @@ class Course extends Controller
      */
     public function createCourse(): void
     {
-       // Access::checkAdmin();
+        //Access::checkAdmin();
 
         $formation = new Formation();
-        $data = $formation->model->getAllForForm('name');
-       // var_dump($data);
-       
-       if (!empty($_POST['name']) && !empty($_POST['code']) && !empty($_POST['status'])){
-        $course_data = [ 
-        'name' => $_POST['name'],
-        'code' => $_POST['niveau_etude'],
-        'status' => $_POST['status']
-        ];
-        
+        $data_formation = $formation->model->getAllForForm('name');
+        $course = new Course();
+        $data_course = $course->model->getAllForForm('name');
 
-        $courseid = $this->model->create_formation($course_data);
+        Output::render2('createCourse', $data_formation,$data_course);
+    }
+    public function createNewCourse() : void {       
+         $data=1;
+
+         Output::render('createNewCourse',$data);
         
-       
-       
-      
-       //var_dump($info);
-         Output::render('createCourse', $course_data);
+     //}
+        }
+        public function  cr_new_course() : void{            
+            if (!$_POST) {
+                header('HTTP/1.1 405');
+            }
+            if (!empty($_POST['name']) && !empty($_POST['code']) && !empty($_POST['status']) ){
+                $course_data = [ 
+                'name' => $_POST['name'],
+                'code' => $_POST['code'],
+                'status' => $_POST['status'],
+                 ];            
+                
+                 $courseid = $this->model->createNewCourse($course_data);
+                 Output::render('createNewCourse',$course_data);
+        
     }
-    }
+}
 }
