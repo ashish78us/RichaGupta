@@ -51,7 +51,7 @@ INSERT INTO `course` (`id`, `name`, `code`) VALUES
 
 CREATE TABLE IF NOT EXISTS `formation` (
     `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `name` varchar(255) NOT NULL,
+    `name` varchar(255) NOT NULL UNIQUE,
     `niveau_etude` VARCHAR(255) NOT NULL,
    `status` varchar(255) NOT NULL,
    `date_debut` DATE NOT NULL,

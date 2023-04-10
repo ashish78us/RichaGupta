@@ -10,9 +10,9 @@ use app\Helpers\Bootstrap;
 class Formation extends Controller
 {
 
-    public function __construct() {
-        parent::__construct();
-    }
+    //public function __construct() {
+        //parent::__construct();
+   // }
     public  function create_formation(): void {
         if (!$_POST) {
             header('HTTP/1.1 405');
@@ -24,8 +24,12 @@ class Formation extends Controller
             'status' => $_POST['status'],
             'date_debut' => $_POST['date_debut'],
             'date_fin' => $_POST['date_fin']   ];
-
-            $formationid = $this->$model->create_formation($formation_data);
+                //var_dump("inside if");
+                $formation_model = new \app\Models\Formation();
+            //$formationid = $this->$model->create_formation_model($formation_data);
+            $formationid = $formation_model->create_formation_model($formation_data);
+            header('Location: index.php?view=api/formation/formationList');
+            
         }
         else {
             // Redirection vers le formulaire de signup
@@ -75,10 +79,10 @@ class Formation extends Controller
         Output::render('List_formation', $formation);
     }
     public function delete($id) {
+        $formation_model = new \app\Models\Formation();
         
-        $this->model->delete($id);
-        header('Location:index.php?view=api/Formation/List_formation');
-        
+        $formation_model->Delete_model($id);
+        header('Location:index.php?view=api/Formation/formationList');        
        
     }
     public function update($id): void

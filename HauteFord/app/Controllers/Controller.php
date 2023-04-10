@@ -19,7 +19,7 @@ abstract class Controller
      */
     public function __construct(int $id = null)
     {
-        //var_dump("Inside __construct");
+        //var_dump("Inside __construct of controller");
         $class = get_called_class();
         $data = explode('\\', $class);
         $class = '\app\Models\\' . end($data);

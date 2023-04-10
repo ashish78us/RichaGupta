@@ -14,9 +14,9 @@ class Formation extends Model
     public function __construct() {
         parent::__construct();
     }
-    public static function create_formation(array $data): int
+    public static function create_formation_model(array $data): int
     {
-        
+        //var_dump("inside formation model");
         $insert = self::$connect->prepare("INSERT INTO formation (name, niveau_etude, status, date_debut, date_fin) VALUES (?, ?, ?, ?, ?)");
         $insert->execute(array_values($data));
         if ($insert->rowCount()) {
@@ -45,18 +45,17 @@ class Formation extends Model
         //var_dump($formation);
         return $formation;
     }
-    public static function Delete($id){
+    public function Delete_model($id){
         if (!is_numeric($id)) {
             return false;
         }
         // Construct and execute the DELETE query
-        $this->db->query("DELETE FROM formation WHERE id = :id");
-        $this->db->bind(':id', $id);
-        if($this->db->execute()){
-            return true;
-        }else{
-            return false;
-        }
+
+        $sql = 'DELETE        
+        from formation f where f.id=? ';
+        $request = self::$connect->prepare($sql);
+        $request->execute([$id]);
+        
     }
     public static function getById($id)
     {

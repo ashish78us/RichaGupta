@@ -117,7 +117,7 @@ class Course extends Controller
                  ];            
                 
                  $courseid = $this->model->createNewCourse($course_data);
-                 Output::render('createNewCourse',$course_data);
+               //  Output::render('createNewCourse',$course_data);
         
     }
 }

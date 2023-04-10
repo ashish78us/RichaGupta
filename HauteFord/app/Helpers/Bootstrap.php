@@ -418,7 +418,10 @@ class Bootstrap
             //var_dump($hyper_link);
 
             $body .= '<td>' . $hyper_link .'</td>'; 
-            $hyper_link = '<a href="#" onclick="(confirmDelete('.$id.'})" class="btn btn-primary btn-sm" role="button">Delete</a>';
+            //$hyper_link = '<a href=\"index.php?view=api/Formation/delete/" onclick="(confirmDelete('.$id.'})" class="btn btn-primary btn-sm" role="button">Delete</a>';
+            $hyper_link = "<a href=\"index.php?view=api/Formation/delete/";
+            $hyper_link .= $id;
+            $hyper_link .="\">DELETE</a>";
             $body .='<td>'. $hyper_link .'</td>'; 
             
             
