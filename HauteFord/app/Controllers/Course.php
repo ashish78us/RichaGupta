@@ -14,11 +14,23 @@ class Course extends Controller
     public function list(): void
     {
         Access::checkLoggedIn();
-
+        //var_dump("indise list");
         // Appel à la méthode du Model afin de récupérer le résultat sous forme d'un tableau d'objets
         $courses = $this->model->getAll();
         // Appel à la méthode statique render de la classe Output afin d'afficher la vue "courses" en y intégrant le tableau d'objets provenant du Model
         Output::render('courses', $courses);
+    }
+
+    public function courselist_cont(String $message = ''): void
+    {
+        Access::checkLoggedIn();
+        //var_dump("indise list");
+        // Appel à la méthode du Model afin de récupérer le résultat sous forme d'un tableau d'objets
+        //self::cr_new_course();
+        $courses = $this->model->course_model_getAll();
+        //var_dump($courses);
+        // Appel à la méthode statique render de la classe Output afin d'afficher la vue "courses" en y intégrant le tableau d'objets provenant du Model
+        Output::render2('course_list', $courses, $message);
     }
 
     /**
@@ -117,8 +129,54 @@ class Course extends Controller
                  ];            
                 
                  $courseid = $this->model->createNewCourse($course_data);
-               //  Output::render('createNewCourse',$course_data);
+                 self::courselist_cont();                 
         
     }
+    else {self::courselist_cont();}
 }
+public function  update($id) : void{ 
+    $courseById = $this->model->getById($id);
+        //var_dump($formation->name);
+
+        Output::render('update_course', $courseById); 
+    
+}
+
+public function update_row($id): void
+    {     
+        //var_dump($_POST)  ;
+        $courseObjectById = $this->model->getById($id);
+        //$courseObjectById=$this->model->setColumnsValueFromView($courseObjectById); 
+        var_dump($_POST['status']);
+        if ($_POST['status']=="checked")
+        {            
+            $courseObjectById->status="Active";}
+            
+        else if  ($_POST['status']=="unchecked")
+        {            
+            $courseObjectById->status="Inactive";}   
+       
+        $courseObjectById->name = $_POST['cc-name'];
+        $courseObjectById->code = $_POST['cc-code'];
+
+        $this->model->update($courseObjectById);
+    
+        
+        self::courselist_cont();  
+       
+    }
+
+    public function delete($id): void
+    {             
+        
+        $returnString=$this->model->Delete_model($id);  
+        
+        self::courselist_cont($returnString);  
+       
+    }
+
+    
+
+
+
 }

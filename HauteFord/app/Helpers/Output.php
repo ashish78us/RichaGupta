@@ -110,6 +110,7 @@ class output
     {
         echo Bootstrap::$template($data, $data2);
     }
+    
 
     /**
      * Fonction appelant dynamiquement la vue associée au template spécifié en paramètre, mais retournant le contenu au lieu de l'afficher

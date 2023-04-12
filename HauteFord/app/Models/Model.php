@@ -127,18 +127,17 @@ abstract class Model
      */
     public static function update(object $object): int
     {
-        
+        //var_dump("inside Model superclass::update and if");
+        //var_dump($object);
         if (empty($object->id)) {
-            //var_dump("inside update and if");
+            
             return false;
         }
-        $params = array_values(get_object_vars($object));
-        $params[] = $object->id;
-        //var_dump("update=".$object->id);
-        //foreach ( $params as $key => $value) {
-          //  var_dump("Key=".$key." "."Value=".$value);
-        //}
+        $params = array_values(get_object_vars($object));        
+        $params[] = $object->id;       
+        
         $setFields = self::getSelectFields($object, ',', ' = ?');
+        //var_dump($setFields);
         $query = "UPDATE " . self::getClassName() . " SET $setFields WHERE id = ?";
         //var_dump("query=".$query);
         $request = self::$connect->prepare($query);

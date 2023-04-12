@@ -335,7 +335,73 @@ class Bootstrap
         // return self::table($data, array_keys(get_object_vars($data[0])), 'Courses');
     }
 
+    public static function course_list(array $data, String $message = ''): string
+    {
+        //var_dump("Inside Boot and List_formation");
+       $modal = self::viewModal('modal-course-list', Text::getString(['course detail', 'détail course']), '', '', 'lg');
+       $body = '<tr>';
+        foreach ($data as $row) {
+            
+            //$formation = new Formation();            
+            foreach ($row as $key => $value) {
+                
+                if ($key == 'name') {
+                    $value = self::linkModal('modal-course-list', $value, 'formation-course-link'); 
+                    //var_dump($value);                  
+                    
+                }  
+                if ($key == 'id') {
+                    $id=$value; 
+                    //var_dump($value);
+                    //var_dump($id);                  
+                    
+                }           
+                if ($value) {
+                    $body .= '<td>' . $value . '</td>';                     
+                 }  
 
+            }
+            $hyper_link ="<a href=\"index.php?view=api/course/update/";
+            $hyper_link .= $id;
+            //var_dump("row=".$row);
+            $hyper_link .="\">UPDATE</a>";
+            //var_dump($hyper_link);
+
+            $body .= '<td>' . $hyper_link .'</td>'; 
+            //$hyper_link = '<a href=\"index.php?view=api/Formation/delete/" onclick="(confirmDelete('.$id.'})" class="btn btn-primary btn-sm" role="button">Delete</a>';
+            $hyper_link = "<a href=\"index.php?view=api/course/delete/";
+            $hyper_link .= $id;
+            $hyper_link .="\">DELETE</a>";
+            $body .='<td>'. $hyper_link .'</td>'; 
+            
+            
+										
+          $body .= '</tr>';
+            //var_dump($body);
+        }        
+        
+        //var_dump($body);
+    //include_once ROOT_PATH . '/view/admin/menu.html';
+    return 
+    '<h2>' . $message . '</h2>' . 
+    '<h2>' . Text::getStringFromKey('course') . '</h2>
+        <table class="table table-striped table-dt" id="course-list">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>' . Text::getStringFromKey('name') . '</th>
+                    <th>' . Text::getString(['code', 'code']) . '</th>
+                    <th>' . Text::getString(['status', 'status']) . '</th>
+                    
+                    
+                </tr>
+            </thead>
+            <tbody>    
+                ' . $body . '
+            </tbody>
+        </table>' . $modal;       
+
+    }
     public static function users(array $data): string
     {
         $body = '';
@@ -611,7 +677,58 @@ class Bootstrap
                     </form>
                     </div>';
 
-    }            
+    } 
+    
+    public static function update_course($data) {     
+
+        $formationid=$data; 
+        if ($data->status == 'Active'){
+        $active="checked"; 
+        $inactive="unchecked"; 
+        }    
+        else  
+        {
+         $active="unchecked"; 
+         $inactive="checked"; 
+     }
+ 
+        return '<hr>
+        
+        <form action="index.php?view=api/course/update_row/' . $data->id  . '" method="post" enctype="multipart/form-data">
+        
+        <div class="cantainer">
+        <h1 class ="form-title">Update_course</h1> 
+        <div class="main-formation-info">
+      <input type="hidden" id="uu-formationid" name="id" value="' . $data->id . '">
+      <div class ="formation-input-box">
+         <label for="cc-name">' . Text::getStringFromKey('name') . '</label>
+        <input type="name" id="cc-name" name="cc-name" class="form-control" value="' . $data->name . '">
+        </div>
+        <div class ="formation-input-box">
+        <label for="cc-code">' . Text::getStringFromKey('code') . '</label>
+      <input type="text" id="cc-code" name="cc-code" class="form-control" value="' . $data->code . '">
+                
+      </div>
+      <div class ="formation-input-box">
+                <label for="cc-status">' . Text::getStringFromKey('status info') . '</label>
+ <div class="form-check">
+          <input class="form-check-input" name="status" type="radio"  id="active" class="form-control" value="'.$active.'"' . $active . '> 
+     <label class="form-check-label" for="active">Active</label>
+ </div>
+ <div class="form-check">
+          <input class="form-check-input" name="status" type="radio" id="inactive" class="form-control" value="'.$inactive.'"'. $inactive.'> 
+     <label class="form-check-label" for="inactive">Inactive</label>
+ </div>
+ </div>   
+   
+                <div class ="form-submit-btn">
+                <input type="submit" class="btn btn-primary" value="Valider">
+                </div>
+                
+                     </form>
+                     </div>';
+ 
+     } 
 
 
 

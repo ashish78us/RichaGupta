@@ -45,6 +45,43 @@ class Course extends Model
         return $courses;
     }
 
+    public static function course_model_getAll(string $orderby = ''): array
+    {
+        $course = [];
+        $sql = 'SELECT c.id,
+                c.name, 
+                c.code,              
+               c.status                
+             from course c
+                ORDER BY c.id';
+
+        $request = self::$connect->prepare($sql);
+        $request->execute();
+        while ($data_tmp = $request->fetchObject()) {
+            $course[] = $data_tmp;
+        }
+        
+        return $course;
+    }
+
+    public static function getById($id)
+    {
+        //var_dump($id);
+        //return "Inside Formation Model getById";
+        
+        $sql = 'SELECT c.id,
+        c.name, 
+        c.code,              
+       c.status                
+     from course c where c.id=? ORDER BY c.id';
+
+        $request = self::$connect->prepare($sql);
+        $request->execute([$id]);
+        $courseResultById=$request->fetchObject();
+        
+        return $courseResultById;
+    }
+
     /**
      * @param int $formationid
      * @return array
@@ -165,5 +202,30 @@ class Course extends Model
         $request = self::$connect->prepare($sql);
         $request->execute([$courseid]);
         return $request->fetchObject()->prepreq;
+    }
+
+    public function Delete_model($id): String{
+        if (!is_numeric($id)) {
+            return false;
+        }
+        // Construct and execute the DELETE query
+
+        //$formationCourse = new Course_formation()
+        $sql = "SELECT id FROM formation_course WHERE courseid = ?";
+        $request = self::$connect->prepare($sql);
+        $request->execute([$id]);
+        //var_dump($request->fetchObject());
+        if(!$request->fetchObject()){
+        $sql = 'DELETE  from course f where f.id=? ';
+        $request = self::$connect->prepare($sql);
+        $request->execute([$id]);
+        //var_dump("Deleted");
+        return "Deleted";
+    }
+    else {
+        return "Cannot be deleted because it is referenced in Course_Formation";
+        //var_dump("Cannot be deleted because it is referenced in Course_Formation");
+    }
+        
     }
 }

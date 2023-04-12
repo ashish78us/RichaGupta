@@ -9,8 +9,8 @@ if  (str_contains($route['path'], $api_path)) {
     spl_autoload_register(function ($class) {
         //var_dump(__DIR__ .  strtolower(str_replace('\\', DIRECTORY_SEPARATOR, $class)) . '.php'); die;
         //var_dump(DIRECTORY_SEPARATOR);
-        var_dump("inside spl");
-        var_dump($class);
+        //var_dump("inside spl");
+        //var_dump($class);
        
         require __DIR__  . '\\' .  strtolower(str_replace('\\', DIRECTORY_SEPARATOR, $class)) . '.php';
     });
