@@ -272,8 +272,18 @@ class User extends Controller
                     $_SESSION['userid'] = $user->id;
                     $_SESSION['pays'] = $user->pays;
                     // Appel à la method de création d'alerte et redirection vers la vue dynamique (method profile du Controller user)
+                    //var_dump("inside Login");
+                    $bool=self::isAdmin($user->id);
+                    
                     $this->addRole($user->id, Role::INVITE);
-                    Output::createAlert('Bienvenue ' . $user->username, 'success', 'index.php?view=api/user/profile/' . $user->id);
+                    //if($bool=self::isAdmin($user->id)){
+                        if(Access::isAdmin($user->id)){
+                        $view="index.php?view=view/admin/index/";
+                    }
+                    else {
+                        $view="index.php?view=api/user/profile/";
+                    }
+                    Output::createAlert('Bienvenue ' . $user->username, 'success', $view . $user->id);
                 }
             } else {
                 Output::render('messageBox', 'Paramètres invalides!');
@@ -346,8 +356,12 @@ class User extends Controller
         Output::render('users', $users);
     }
     public function isAdmin(int $id) : bool
-    {
-        return $this->model->isAdmin($id);
+    {        
+        $role=$this->model->isAdmin($id);
+        if ($role==1){
+            return true;
+        }
+        else return false; 
     }
 
     /**

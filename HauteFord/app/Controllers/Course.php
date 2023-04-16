@@ -136,9 +136,7 @@ class Course extends Controller
 }
 public function  update($id) : void{ 
     $courseById = $this->model->getById($id);
-        //var_dump($formation->name);
-
-        Output::render('update_course', $courseById); 
+    Output::render('update_course', $courseById); 
     
 }
 
@@ -146,8 +144,7 @@ public function update_row($id): void
     {     
         //var_dump($_POST)  ;
         $courseObjectById = $this->model->getById($id);
-        //$courseObjectById=$this->model->setColumnsValueFromView($courseObjectById); 
-        var_dump($_POST['status']);
+        
         if ($_POST['status']=="checked")
         {            
             $courseObjectById->status="Active";}
@@ -158,19 +155,13 @@ public function update_row($id): void
        
         $courseObjectById->name = $_POST['cc-name'];
         $courseObjectById->code = $_POST['cc-code'];
-
         $this->model->update($courseObjectById);
-    
-        
         self::courselist_cont();  
-       
     }
 
     public function delete($id): void
-    {             
-        
-        $returnString=$this->model->Delete_model($id);  
-        
+    {    
+        $returnString=$this->model->DeleteCourseModel($id);  
         self::courselist_cont($returnString);  
        
     }

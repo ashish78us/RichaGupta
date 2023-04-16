@@ -204,27 +204,22 @@ class Course extends Model
         return $request->fetchObject()->prepreq;
     }
 
-    public function Delete_model($id): String{
+    public function DeleteCourseModel($id): String{
         if (!is_numeric($id)) {
             return false;
-        }
-        // Construct and execute the DELETE query
-
-        //$formationCourse = new Course_formation()
+        }  
+        //First check if record for this course exist in course_formation. If not then can be deleted.
         $sql = "SELECT id FROM formation_course WHERE courseid = ?";
         $request = self::$connect->prepare($sql);
-        $request->execute([$id]);
-        //var_dump($request->fetchObject());
+        $request->execute([$id]);        
         if(!$request->fetchObject()){
         $sql = 'DELETE  from course f where f.id=? ';
         $request = self::$connect->prepare($sql);
-        $request->execute([$id]);
-        //var_dump("Deleted");
+        $request->execute([$id]);        
         return "Deleted";
     }
     else {
-        return "Cannot be deleted because it is referenced in Course_Formation";
-        //var_dump("Cannot be deleted because it is referenced in Course_Formation");
+        return "Cannot be deleted because it is referenced in Course_Formation";        
     }
         
     }

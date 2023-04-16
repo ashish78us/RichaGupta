@@ -39,17 +39,12 @@
                     <li class="nav-item">
                         <a href="index.php?view=api/user/profile/<?=$_SESSION['userid']?>" class="nav-link"><?php echo \app\Helpers\Text::getStringFromKey('profile');?></a>
                     </li>
-                    
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="index.php?view=view/admin/index" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Admin
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" href="index.php?view=view/admin/courses">Cours</a></li>
-                                <li><a class="dropdown-item" href="index.php?view=api/user/usersList">Utilisateurs</a></li>
-                            </ul>
-                        </li>
-                  
+                    <?php if(\app\Helpers\Access::isAdmin()) {?>
+                     <li class="nav-item">
+                        <a href="index.php?view=view/admin/index" class="nav-link"><?php echo \app\Helpers\Text::getStringFromKey('Admin');?></a>
+                    </li>
+
+                        <?php } ?>
 
                 <li class="nav-item">
                         <a href="index.php?view=api/user/logout" class="nav-link"><?php echo \app\Helpers\Text::getStringFromKey('logout');?></a>

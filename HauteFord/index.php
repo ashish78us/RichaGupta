@@ -9,9 +9,10 @@ session_name('HAUTEFORD' . date('Ymd'));
 session_start(['cookie_lifetime' => 3600]);
 spl_autoload_register(function ($class) {
    //var_dump($class);
-  // $ashish=__DIR__ . '\\' .   strtolower(str_replace('\\', DIRECTORY_SEPARATOR, $class)) . '.php';
+   //var_dump(__DIR__);
+   $ashish=__DIR__ . '\\' .   strtolower(str_replace('\\', DIRECTORY_SEPARATOR, $class)) . '.php';
     //var_dump($ashish);
-    require __DIR__  . '\\' .   strtolower(str_replace('\\', DIRECTORY_SEPARATOR, $class)) . '.php';
+    require_once __DIR__  . '\\' .   strtolower(str_replace('\\', DIRECTORY_SEPARATOR, $class)) . '.php';
 });
 
 
@@ -25,3 +26,5 @@ require_once __DIR__ . '/view/header.html';
 require_once __DIR__ . '/view/menu.php';
 require_once __DIR__ . '/view/default.php';
 require_once __DIR__ . '/view/footer.html';
+
+?>

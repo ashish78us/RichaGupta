@@ -1,5 +1,71 @@
-<div class="include-admin-menu"></div>
-<ul>
-    <li><a href="index.php?view=api/user/usersList">Gérer les utilisateurs</a></li>
-    <li><a href="index.php?view=view/admin/courses">Gérer les formations et les cours</a></li>
-</ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compitable" content="IE-edge">
+  <meta name="viewport" content="width-device-width, initial-scale=1.0">
+  <link rel ="stylesheet" href="view/admin/style.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
+  <title>Admin Panel</title>
+</head>
+<body>
+
+  <div class="container">
+    <div class="topbar">
+      <div class="logo">
+        <h2>Admin</h2>
+      </div>
+      <div class="Search">
+        <input type="text" id="Search" placeholder="search here">
+        <label for="Search"><i class="fas fa-search"></i></label>
+      </div>
+      <i class="fas fa-bell"> </i>
+      <div class="user">
+        <img src="view/admin/img/user.png" alt="">
+      </div>
+    </div>
+    <div class="sidebar">
+      <ul>
+        <li>
+          <a href="#">
+            <i class="fas fa-th-large"></i>
+            <div>Dashboard</div>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-graduation-cap"></i>
+            <div>Formation</div>
+          </a>
+        </li>
+        <li>
+          <a href="index.php?view=view/admin/courses">
+            <i class="fas fa-tasks"></i>
+            <div>Courses</div>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-users"></i>
+            <div>Utilisateurs</div>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-check-circle"></i>
+            <div>Demande</div>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <div>Professeur</div>
+          </a>
+        </li>
+
+    </div>
+  </div>
+</body>
+
+
+</html>

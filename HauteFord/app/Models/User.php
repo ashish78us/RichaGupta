@@ -88,10 +88,24 @@ class User extends Model
     }
     public static function isAdmin(int $id): mixed
     {
+        //var_dump("inside model isAdmin");
         $result = self::$connect->prepare("SELECT COUNT(*) FROM user_role WHERE roleid = " . Role::ADMIN . " AND userid = ?");
         $result->execute([$id]);
         return $result->fetchColumn();
     }
+    public static function isAdmin2(int $id): mixed
+    {
+        //var_dump("inside model isAdmin");
+        $result = self::$connect->prepare("SELECT roleid FROM user_role WHERE  userid = ?");
+        $result->execute([$id]);
+        $roleid=$result->fetchColumn();
+        $result2 = self::$connect->prepare("SELECT name FROM role WHERE  id = ?");
+        $result2->execute([$roleid]);
+
+        //var_dump($result2->fetchColumn());
+        return $result2->fetchColumn();
+    }
+    
 
     public static function hasRole(int $id, int $role): mixed
     {
