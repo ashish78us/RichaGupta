@@ -14,9 +14,20 @@ class Course extends Controller
     public function list(): void
     {
         Access::checkLoggedIn();
-        //var_dump("indise list");
+        var_dump("indise list");
         // Appel à la méthode du Model afin de récupérer le résultat sous forme d'un tableau d'objets
         $courses = $this->model->getAll();
+        // Appel à la méthode statique render de la classe Output afin d'afficher la vue "courses" en y intégrant le tableau d'objets provenant du Model
+        Output::render('courses', $courses);
+    }
+
+    public function list_filtered(): void
+    {
+        Access::checkLoggedIn();
+        //var_dump("indise list");
+        // Appel à la méthode du Model afin de récupérer le résultat sous forme d'un tableau d'objets
+        //var_dump($_POST);
+        $courses = $this->model->getAll_filter();
         // Appel à la méthode statique render de la classe Output afin d'afficher la vue "courses" en y intégrant le tableau d'objets provenant du Model
         Output::render('courses', $courses);
     }

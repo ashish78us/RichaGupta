@@ -36,6 +36,7 @@ abstract class Model
     {
         $datas = [];
         $sql = "SELECT * FROM " . self::getClassName();
+        
         if ($orderby && in_array($orderby, self::getColumns())) {
             $sql .= " ORDER BY " . $orderby;
         }
@@ -46,6 +47,7 @@ abstract class Model
         }
         return $datas;
     }
+    
 
     /**
      * @param string $orderby

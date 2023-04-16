@@ -45,6 +45,32 @@ class Course extends Model
         return $courses;
     }
 
+    public static function getAll_filter(string $orderby = ''): array
+    {
+        $formation_name=$_POST['Search'];
+        
+        $courses = [];
+        $sql = "SELECT c.id as courseid, f.name as formation_name,c.name as course_name, 
+        fc.period as periods,fc.determinant as det,c2.name as course_prereq,fc.teacher as teacher
+                FROM formation_course fc
+               JOIN formation f ON f.id = fc.formationid
+               JOIN course c ON c.id = fc.courseid
+               LEFT JOIN formation_course fc2 ON fc2.id = fc.prepreq
+               LEFT JOIN course c2 ON c2.id = fc2.courseid
+               where f.name like "
+               ."'%".$formation_name."%'"
+               ." OR ". "c.name like "
+               ."'%".$formation_name."%'"
+               ."ORDER BY fc.formationid";
+
+        $request = self::$connect->prepare($sql);
+        $request->execute();
+        while ($data_tmp = $request->fetchObject()) {
+            $courses[] = $data_tmp;
+        }
+        return $courses;
+    }
+
     public static function course_model_getAll(string $orderby = ''): array
     {
         $course = [];

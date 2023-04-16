@@ -279,6 +279,43 @@ class Bootstrap
                 </table>' . $exportlink;
     }
     
+    
+    public static function filter_courses(){
+        return '<h1>Course</h1>
+<form action="" method="post">
+    <div class="container">
+       <div class="cour-group">
+                <label for="formation">Formation</label>
+                <input type="text" id="formation" name="formation" class="cour-group" value="">
+                </div>
+            </div>
+            <div class="cour-group">
+                <label for="course">Course</label>
+                <input type="text" id="course" name="course" class="cour-group" value="">
+                </div>
+            </div>
+            <div class="form-check">
+         <input class="form-check-input" name="status" type="radio"  id="active" class="form-control" value="active"> 
+    <label class="form-check-label" for="active">Active</label>
+</div>
+<div class="form-check">
+         <input class="form-check-input" name="status" type="radio" id="inactive" class="form-control" value="inactive"> 
+    <label class="form-check-label" for="inactive">Inactive</label>
+</div>
+           <button type="submit" class="btn btn-primary">Create</button>
+        </form>';
+   
+    }
+
+
+    
+       
+     
+  
+
+
+    
+    
    
     public static function courses(array $data): string
     {
@@ -315,6 +352,18 @@ class Bootstrap
         // la balise <table> reçoit un attribut id (unique) permettant au Javascript et au CSS de pouvoir le cibler facilement dans le DOM
         return '<h2>' . Text::getStringFromKey('courses') . '</h2>
                 <table class="table table-striped table-dt' . $_SESSION['pays'] . '" id="courses-list">
+
+                <form action="index.php?view=api/course/list_filtered" method="post">
+                <div class="container">
+                
+                <div class="cour-group">
+                <label for="formation">Search</label>
+               <input type="text" id="formation" name="Search" class="cour-group" value="">
+                </div>
+                    
+                 </div>
+                 <button type="submit" class="btn btn-primary">Submit</button>
+                 </form>
                     <thead>
                         <tr>
                             <th>' . Text::getString(['formation', 'formation']) . '</th>
