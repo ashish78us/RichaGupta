@@ -47,7 +47,7 @@ class Course extends Model
 
     public static function getAll_filter(string $orderby = ''): array
     {
-        $formation_name=$_POST['Search'];
+        $search=$_POST['Search'];
         
         $courses = [];
         $sql = "SELECT c.id as courseid, f.name as formation_name,c.name as course_name, 
@@ -57,10 +57,12 @@ class Course extends Model
                JOIN course c ON c.id = fc.courseid
                LEFT JOIN formation_course fc2 ON fc2.id = fc.prepreq
                LEFT JOIN course c2 ON c2.id = fc2.courseid
-               where f.name like "
-               ."'%".$formation_name."%'"
-               ." OR ". "c.name like "
-               ."'%".$formation_name."%'"
+               where f.name like "."'%".$search."%'"             
+               ." OR ". "c.name like "."'%".$search."%'"
+               ." OR ". "fc.period like "."'%".$search."%'" 
+               ." OR ". "fc.determinant like "."'%".$search."%'"  
+               ." OR ". "c2.name like "."'%".$search."%'" 
+               ." OR ". "fc.teacher like "."'%".$search."%'"             
                ."ORDER BY fc.formationid";
 
         $request = self::$connect->prepare($sql);
