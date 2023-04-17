@@ -351,9 +351,7 @@ class Bootstrap
         // ces nouvelles classes CSS doivent être définies dans le projet, elles le sont dans le fichier js/main.js
         // la balise <table> reçoit un attribut id (unique) permettant au Javascript et au CSS de pouvoir le cibler facilement dans le DOM
         return '<h2>' . Text::getStringFromKey('courses') . '</h2>
-                <table class="table table-striped table-dt' . $_SESSION['pays'] . '" id="courses-list">
-
-                <form action="index.php?view=api/course/list_filtered" method="post">
+        <form action="index.php?view=api/course/list_filtered" method="post">
                 <div class="container">
                 
                 <div class="cour-group">
@@ -364,21 +362,23 @@ class Bootstrap
                  </div>
                  <button type="submit" class="btn btn-primary">Submit</button>
                  </form>
+                 <div class="cour-list">
+                <table class="table table-striped table-dt' . $_SESSION['pays'] . '" id="courses-list">                
                     <thead>
                         <tr>
-                            <th>' . Text::getString(['formation', 'formation']) . '</th>
-                            <th>' . Text::getString(['course', 'cours']) . '</th>
-                            <th>' . Text::getString(['periods', 'périodes']) . '</th>
-                            <th>' . Text::getString(['determining', 'déterminant']) . '</th>
-                            <th>' . Text::getString(['prerequisite', 'prérequis']) . '</th>
-                            <th>' . Text::getString(['teacher', 'professeur']) . '</th>
-                            <th>' . Text::getString(['enrol', 'inscrire']) . '</th>
+                            <th>' . Text::getString(['formation', 'formation']) . '<span class="icon-arrow">&UpArrow;</span></th>
+                            <th>' . Text::getString(['course', 'cours']) . '<span class="icon-arrow">&UpArrow;</span></th>
+                            <th>' . Text::getString(['periods', 'périodes']) . '<span class="icon-arrow">&UpArrow;</span></th>
+                            <th>' . Text::getString(['determining', 'déterminant']) . '<span class="icon-arrow">&UpArrow;</span></th>
+                            <th>' . Text::getString(['prerequisite', 'prérequis']) . '<span class="icon-arrow">&UpArrow;</span></th>
+                            <th>' . Text::getString(['teacher', 'professeur']) . '<span class="icon-arrow">&UpArrow;</span></th>
+                            <th>' . Text::getString(['enrol', 'inscrire']) . '<span class="icon-arrow">&UpArrow;</span></th>
                         </tr>
                     </thead>
                     <tbody>
                         ' . $body . '
                     </tbody>
-                </table>' . $modal;
+                </table></div>' . $modal;
 
         // Alternative utilisant la méthode générique de la classe Bootstrap. Plus court à écrire, mais moins flexible et ne gérant pas les traductions.
         // return self::table($data, array_keys(get_object_vars($data[0])), 'Courses');
