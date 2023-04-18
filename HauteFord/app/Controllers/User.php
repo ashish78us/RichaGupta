@@ -330,7 +330,7 @@ class User extends Controller
         $courses = $course->getByUserEnrol($id);
         Output::render('profileCourses', $courses);
      
-        if($this->model->isAdmin($id)){
+        if($this->model->isAdmin($id)){            
             $listUser = $this->model->getUserListIfAdmin($id);
             Output::render('profileUserListIfAdmin', $listUser);
         }

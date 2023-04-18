@@ -82,7 +82,10 @@ class Bootstrap
   
     public static function profile(object $data, string $class = ''): string
     {
-        //var_dump($class);
+        //var_dump($data);
+        if ($data->admin==1)
+        {$data->admin="Yes";}
+        else {$data->admin="No";}
         $tbody = '';
         foreach ($data as $key => $value) {
             if ($key == 'image') {
@@ -526,17 +529,15 @@ class Bootstrap
                  }  
 
             }
-            $hyper_link ="<a href=\"index.php?view=api/Formation/update/";
-            $hyper_link .= $id;
-            //var_dump("row=".$row);
-            $hyper_link .="\">UPDATE</a>";
-            //var_dump($hyper_link);
+            $hyper_link ="<a class=\"btn btn-primary\" role=\"button\" href=\"index.php?view=api/Formation/update/";
+            $hyper_link .= $id;            
+            $hyper_link .="\">Update</a>";           
 
             $body .= '<td>' . $hyper_link .'</td>'; 
             //$hyper_link = '<a href=\"index.php?view=api/Formation/delete/" onclick="(confirmDelete('.$id.'})" class="btn btn-primary btn-sm" role="button">Delete</a>';
-            $hyper_link = "<a href=\"index.php?view=api/Formation/delete/";
+            $hyper_link = "<a class=\"btn btn-primary\" role=\"button\" onclick=\"confirmDelete(";
             $hyper_link .= $id;
-            $hyper_link .="\">DELETE</a>";
+            $hyper_link .=")\">Delete</a>";
             $body .='<td>'. $hyper_link .'</td>'; 
             
             
