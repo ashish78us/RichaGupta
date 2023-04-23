@@ -232,7 +232,7 @@ class Course extends Model
         return $request->fetchObject()->prepreq;
     }
 
-    public function DeleteCourseModel($id): String{
+    public function DeleteCourseModel($id): String{        
         if (!is_numeric($id)) {
             return false;
         }  
@@ -251,4 +251,5 @@ class Course extends Model
     }
         
     }
+    
 }

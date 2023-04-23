@@ -283,7 +283,11 @@ class User extends Controller
                     else {
                         $view="index.php?view=api/user/profile/";
                     }
+                    $cookie_username = "coo_username";
+                    $cookie_userid = $user->username;
+                    setcookie($cookie_username, $cookie_userid, 0, "/");                    
                     Output::createAlert('Bienvenue ' . $user->username, 'success', $view . $user->id);
+                    
                 }
             } else {
                 Output::render('messageBox', 'Paramètres invalides!');

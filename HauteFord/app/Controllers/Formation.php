@@ -6,6 +6,7 @@ use app\Helpers\Output;
 use app\Helpers\Access;
 use app\Helpers\Text;
 use app\Helpers\Bootstrap;
+use stdClass;
 
 class Formation extends Controller
 {
@@ -42,7 +43,7 @@ class Formation extends Controller
     
 
 
-    protected function getForFormation(int $id): mixed
+    public function getForFormation(int $id): mixed
     {
         // récupération du record en DB correspondant à l'id fourni
         $formation= $this->get($id);
@@ -66,6 +67,15 @@ class Formation extends Controller
         
     }
     
+    public function formationListforUser(): void
+    {       
+
+        $formation = new Formation();
+        //var_dump($formation->model);
+        $formation = $formation->model->getAll();          
+
+        Output::render('User_Listformation', $formation);
+    }
 
 
     
@@ -74,9 +84,14 @@ class Formation extends Controller
 
         $formation = new Formation();
         //var_dump($formation->model);
-        $formation = $formation->model->getAll();          
+        $formation = $formation->model->getAll(); 
+        //return "<html><body><h2>Hello</h2></body></html>";  
+        //$html_content = "<html><body><h2>Hello</h2></body></html>";      
 
         Output::render('List_formation', $formation);
+
+        //return $html_content;
+        
     }
     public function delete($id) {
         $formation_model = new \app\Models\Formation();

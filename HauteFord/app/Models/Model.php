@@ -8,6 +8,7 @@ use app\Helpers\DB;
 abstract class Model
 {
     protected static PDO $connect;
+    
 
     public function __construct()
     {
@@ -26,7 +27,7 @@ abstract class Model
     {
         return false;
     }
-
+    
     
     /**
      * @param string $orderby
@@ -36,7 +37,7 @@ abstract class Model
     {
         $datas = [];
         $sql = "SELECT * FROM " . self::getClassName();
-        
+        //var_dump($sql);
         if ($orderby && in_array($orderby, self::getColumns())) {
             $sql .= " ORDER BY " . $orderby;
         }
@@ -122,6 +123,32 @@ abstract class Model
     {
         return 0;
     }
+    public static function createAny($tablename,$data): int
+    {
+        //var_dump($tablename);
+       
+       $count = 0;
+       $arraycount = count($data);
+        $columns = self::getColumns();
+        $fields = "";
+        foreach($data as $key => $val){
+           if ($count == $arraycount-1){
+            $fields .= $key;
+            break;
+           }
+           else{$fields .= $key . ",";}            
+            $count= $count +1;
+        }        
+        $insert = self::$connect->prepare("INSERT INTO $tablename ($fields) VALUES (?, ?, ?)");
+        $insert->execute(array_values($data));
+        if ($insert->rowCount()) {
+            // retourne l'id du champ créé en DB par l'INSERT
+            return self::$connect->LastInsertId();
+        }
+        //return 0;       
+        
+    }
+   
 
     /**
      * @param object $object
@@ -132,7 +159,7 @@ abstract class Model
         //var_dump("inside Model superclass::update and if");
         //var_dump($object);
         if (empty($object->id)) {
-            
+            var_dump($object);
             return false;
         }
         $params = array_values(get_object_vars($object));        

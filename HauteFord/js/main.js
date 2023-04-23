@@ -165,6 +165,12 @@ $(document).ready( function ($) {
       document.location = 'index.php?view=api/Formation/delete/'+ $id ;
   }
 }
+
+function confirmDeleteCourse($id) {    
+    if (confirm("Are you sure you want to delete")) {               
+      document.location = 'index.php?view=api/Course/delete/'+ $id ;
+  }
+}
  
 
  const search = document.querySelector('.input-group input'),

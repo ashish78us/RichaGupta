@@ -37,6 +37,9 @@
                         <a href="index.php?view=api/course/list" class="nav-link"><?php echo \app\Helpers\Text::getStringFromKey('courses');?></a>
                     </li>
                     <li class="nav-item">
+                        <a href="index.php?view=api/formation/formationListforUser" class="nav-link"><?php echo \app\Helpers\Text::getStringFromKey('formation');?></a>
+                    </li>
+                    <li class="nav-item">
                         <a href="index.php?view=api/user/profile/<?=$_SESSION['userid']?>" class="nav-link"><?php echo \app\Helpers\Text::getStringFromKey('profile');?></a>
                     </li>
                     <?php if(\app\Helpers\Access::isAdmin()) {?>

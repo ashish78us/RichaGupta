@@ -4,6 +4,7 @@ namespace app\Helpers;
 use app\Controllers\Course;
 use app\Controllers\User;
 use app\Controllers\Formation;
+use app\Controllers\Demand;
 use stdClass;
 
 class Bootstrap
@@ -311,7 +312,199 @@ class Bootstrap
     }
 
 
+    public static function User_Listformation(array $data):string{
+        
+
+    $modal1 = self::viewModal('modal-formation-list', Text::getString(['formation detail', 'détail formation']), '' , '', 'lg');
+    $modal2 = "";
+    //var_dump($modal);
+    $userObj = new User();
+    //$user = $user->model->getByField('username',$_COOKIE['coo_username']);
+            //var_dump($user);
+            $user = Demand::getUserByid();
+            $userType = $userObj->isAdmin($user->id);
+            //var_dump($userType);
+
+     $body = '<tr>';
+     
+        foreach ($data as $row) {
+          
+            //$formation = new Formation();            
+            foreach ($row as $key => $value) {
+                
+                if ($key == 'name') {
+                    //$value = self::linkModal('modal-formation-list', $value, 'formation-modal-link');                                     
+                    
+                }  
+                if ($key == 'id') {
+                    $id=$value;                                   
+                    
+                }           
+                if ($value) {
+                    $body .= '<td>' . $value . '</td>';                     
+                 }  
+
+            }
+
+            //$hyper_link ="<a class=\"btn btn-primary\" role=\"button\" href=\"index.php?view=api/Demand/formdisplay/";
+            
+            //$formation = new Formation();
+            //$formation = $formation->model->getByField('id',$id);
+            //Output::render('demande_formdisplay',$user, $formation->name);
+            //$form=self::demande_formdisplay($user,$formation);
+            $createDemandBody = self::demande_formdisplay($user,Demand::getFormationName($id),$userType);
+            $demandStatus =Demand::getDemandStatusIfExist($id);
+            //var_dump($demandStatus);
+            $modalid = str_replace(' ', '', Demand::getFormationName($id));
+            if (($demandStatus == "Pending" || $demandStatus == "Inscrit") && !($userType)) {$modalid = "#"; }
+            //if ($userType && $demandStatus == "Demand") { $demandStatus = "Inscrit"; } 
+            //if ($userType && $demandStatus == "Demand") { $demandStatus = "Inscrit"; } 
+            //$modalid= rand();
+            $modal2 .= self::viewModal($modalid, Text::getString(['Demand Request', 'Demand Request']), $createDemandBody , '', 'lg');
+            $demandModal = self::linkModal($modalid, $demandStatus , 'demand-modal-link');           
+            
+            $hyper_link = $demandModal;
+            //$hyper_link .= $id;            
+            //$hyper_link .="\">Demande</a>"; 
+            
+            $body .='<td>'. $hyper_link .'</td>';           
+          
+            if ($value) {
+                $body .= '<td>' . $value . '</td>';                     
+             }  
+            
+ $body .= '</tr>';
+            //var_dump($body);
+        }        
+        
+        //var_dump($body);
+    //include_once ROOT_PATH . '/view/admin/menu.html';
+    return '<h2>' . Text::getStringFromKey('formation') . '</h2>
+        <table class="table table-hover table-dark table-striped table-responsive table-borderless table-dt" id="formation-list">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>' . Text::getStringFromKey('name') . '</th>
+                    <th>' . Text::getString(['niveau_etude', 'niveau_etude']) . '</th>
+                    <th>' . Text::getString(['status', 'status']) . '</th>
+                    <th>' . Text::getString(['date_debut', 'date_debut']) . '</th>
+                    <th>' . Text::getString(['date_fin', 'date_fin']) . '</th>
+                    <th>' . Text::getString(['demande', 'demande']) . '</th>
+                    <th>' . Text::getString(['request_status', 'request_status']) . '</th>
+                    
+                </tr>
+            </thead>
+            <tbody>    
+                ' . $body . '
+            </tbody>
+        </table>' . $modal1 . $modal2 ;       
+
+    }
+
+    public static function demande_formdisplay($data,$formationame,$admin){
+        if ($admin){
+
+            $Button ="<button type=\"submit\" class=\"btn btn-primary\" name=\"DemandAction\" value=\"Inscrit\">Inscrit</button>";
+            $Button .="<button type=\"submit\" class=\"btn btn-primary\" name=\"DemandAction\" value=\"Refuse\">Refuse</button>";
+
+
+        }
+        else {
+            $Button ="<button type=\"submit\" class=\"btn btn-primary\" name=\"DemandAction\" value=\"Create\">Create Request</button>";
+        }
+
+
+        return '<h1>Create Demande</h1>
+    <form action="index.php?view=api/Demand/create/" method="post">
+    <div class="container">
+       <div class="demande-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="demande-group" value="' . $data->username . '">
+                </div>
+            </div>
+            <div class="demande-group">
+                <label for="prenom">Prenom</label>
+                <input type="text" id="prenom" name="prenom" class="demande-group" value="' . $data->prenom . '">
+                </div>
+            </div>
+            <div class="demande-group">
+            <label for="formationame">Formation Name</label>
+            <input type="text" id="formationame" name="formationame" class="demande-group" value="' . $formationame . '">
+            </div>
+
+           '.$Button.'
+        </form>';
+   
+    }
+
+    public static function Admin_Listdemande(array $data){
+        //$modal = self::viewModal('modal-demand-list', Text::getString(['demand detail', 'détail demand']), '', '', 'lg');
+       $body = '<tr>';
+
+        foreach ($data as $row) {
+            
+            //$formation = new Formation();            
+            foreach ($row as $key => $value) {                
+                
+                if ($key == 'id') {
+                    $id=$value;                                     
+                    
+                } 
+                if ($key == 'userid') {
+                    $userid=$value;
+                    $user = new Demand(); 
+                    $user = $user->getUserByid2($userid) ;                                  
+                    $value = $user->username;
+                } 
+
+                if ($key == 'formationid') {
+                    $formationid=$value;
+                    $formation = new Formation(); 
+                    $formation = $formation->getForFormation($formationid) ;                                  
+                    $value = $formation->name;
+                    $value .= '<td>' . $formation->niveau_etude . '</td>';
+                    $value .= '<td>' . $formation->status . '</td>';
+                    $value .= '<td>' . $formation->date_debut . '</td>';
+                    $value .= '<td>' . $formation->date_fin . '</td>';
+                } 
+
+                if ($value) {
+                    $body .= '<td>' . $value . '</td>';                     
+                 }  
+
+            }
+            $body .= '</tr>';
+        }        
+       
+        
+    //include_once ROOT_PATH . '/view/admin/Formation.html';
+    return '<h2>' . Text::getStringFromKey('demand list') . '</h2>
+        <table class="table table-hover table-dark table-striped table-responsive table-borderless table-dt" id="demand-list">
+            <thead>
+                <tr>
+                    <th>id</th>                    
+                    <th>' . Text::getStringFromKey('User') . '</th>
+                    <th>' . Text::getString(['Formation Name', 'Formation Name']) . '</th>
+                    <th>' . Text::getString(['niveau_etude', 'niveau_etude']) . '</th>
+                    <th>' . Text::getString(['status', 'status']) . '</th>
+                    <th>' . Text::getString(['date_debut', 'date_debut']) . '</th>
+                    <th>' . Text::getString(['date_fin', 'date_fin']) . '</th>
+                     <th>' . Text::getString(['demande status', 'demande status']) . '</th>                   
+                    
+                </tr>
+            </thead>
+            <tbody>    
+                '  . $body . '
+            </tbody>
+        </table>' ;       
+
+    }
+
+
     
+
+    
+
        
      
   
@@ -413,7 +606,7 @@ class Bootstrap
                  }  
 
             }
-            $hyper_link ="<a href=\"index.php?view=api/course/update/";
+            $hyper_link ="<a class=\"btn btn-primary\" role=\"button\" href=\"index.php?view=api/Course/update/";
             $hyper_link .= $id;
             //var_dump("row=".$row);
             $hyper_link .="\">UPDATE</a>";
@@ -421,9 +614,9 @@ class Bootstrap
 
             $body .= '<td>' . $hyper_link .'</td>'; 
             //$hyper_link = '<a href=\"index.php?view=api/Formation/delete/" onclick="(confirmDelete('.$id.'})" class="btn btn-primary btn-sm" role="button">Delete</a>';
-            $hyper_link = "<a href=\"index.php?view=api/course/delete/";
+            $hyper_link = "<a class=\"btn btn-primary\" role=\"button\" onclick=\"confirmDeleteCourse(";
             $hyper_link .= $id;
-            $hyper_link .="\">DELETE</a>";
+            $hyper_link .=")\">Delete</a>";
             $body .='<td>'. $hyper_link .'</td>'; 
             
             
@@ -435,7 +628,7 @@ class Bootstrap
         //var_dump($body);
     //include_once ROOT_PATH . '/view/admin/menu.html';
     return 
-    '<h2>' . $message . '</h2>' . 
+    
     '<h2>' . Text::getStringFromKey('course') . '</h2>
         <table class="table table-striped table-dt" id="course-list">
             <thead>
@@ -535,20 +728,22 @@ class Bootstrap
 
             $body .= '<td>' . $hyper_link .'</td>'; 
             //$hyper_link = '<a href=\"index.php?view=api/Formation/delete/" onclick="(confirmDelete('.$id.'})" class="btn btn-primary btn-sm" role="button">Delete</a>';
+            $classname = ",Formation";
+            $functionname = ",delete";
+            //var_dump($classname.$id);
             $hyper_link = "<a class=\"btn btn-primary\" role=\"button\" onclick=\"confirmDelete(";
             $hyper_link .= $id;
+            //$hyper_link .= $classname;
+            //$hyper_link .= $functionname;
             $hyper_link .=")\">Delete</a>";
             $body .='<td>'. $hyper_link .'</td>'; 
-            
-            
-										
-          $body .= '</tr>';
+            $body .= '</tr>';
             //var_dump($body);
         }        
         
-        //var_dump($body);
-    //include_once ROOT_PATH . '/view/admin/menu.html';
-    return '<h2>' . Text::getStringFromKey('formation') . '</h2>
+        //var_dump(ROOT_PATH);
+    //include_once ROOT_PATH . '/view/admin/Formation.html';
+    return '<h2>' . Text::getStringFromKey('formation list') . '</h2>
         <table class="table table-striped table-dt" id="formation-list">
             <thead>
                 <tr>

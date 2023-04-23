@@ -32,16 +32,17 @@ class Course extends Controller
         Output::render('courses', $courses);
     }
 
-    public function courselist_cont(String $message = ''): void
+    public function courselist_cont(): void
     {
         Access::checkLoggedIn();
         //var_dump("indise list");
         // Appel à la méthode du Model afin de récupérer le résultat sous forme d'un tableau d'objets
         //self::cr_new_course();
+        //$courses = new Course();
         $courses = $this->model->course_model_getAll();
         //var_dump($courses);
         // Appel à la méthode statique render de la classe Output afin d'afficher la vue "courses" en y intégrant le tableau d'objets provenant du Model
-        Output::render2('course_list', $courses, $message);
+        Output::render('course_list', $courses);
     }
 
     /**
@@ -173,11 +174,11 @@ public function update_row($id): void
     public function delete($id): void
     {    
         $returnString=$this->model->DeleteCourseModel($id);  
-        self::courselist_cont($returnString);  
+        //self::courselist_cont($returnString);  
+        $courses = $this->model->course_model_getAll();
+        Output::render('course_list', $courses);
        
-    }
-
-    
+    }  
 
 
 

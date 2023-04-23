@@ -9,7 +9,7 @@ abstract class Controller
 {
     protected int $id;
     protected mixed $data;
-    protected Model $model;
+    protected Model $model;    
     protected static mixed $static_model = null;
 
     /**
