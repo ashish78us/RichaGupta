@@ -111,6 +111,7 @@ class Demand extends Controller
                     
                     $demandObject->status = $_POST['DemandAction'];
                     $demand->model->update($demandObject);
+                    
                     header('Location: index.php?view=api/demand/listDemand');
            }
            else {

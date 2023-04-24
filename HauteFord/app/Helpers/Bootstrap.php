@@ -352,7 +352,7 @@ class Bootstrap
             //$formation = $formation->model->getByField('id',$id);
             //Output::render('demande_formdisplay',$user, $formation->name);
             //$form=self::demande_formdisplay($user,$formation);
-            $createDemandBody = self::demande_formdisplay($user,Demand::getFormationName($id),$userType);
+            $createDemandBody = self::demande_formdisplay($user,Demand::getFormationName($id),$userType,"ListFormation");
             $demandStatus =Demand::getDemandStatusIfExist($id);
             //var_dump($demandStatus);
             $modalid = str_replace(' ', '', Demand::getFormationName($id));
@@ -361,8 +361,10 @@ class Bootstrap
             //if ($userType && $demandStatus == "Demand") { $demandStatus = "Inscrit"; } 
             //$modalid= rand();
             $modal2 .= self::viewModal($modalid, Text::getString(['Demand Request', 'Demand Request']), $createDemandBody , '', 'lg');
-            $demandModal = self::linkModalButton($modalid, $demandStatus , 'demand-modal-link');           
-            
+            $buttonClass="button";
+            if($demandStatus == "Refuse"){$buttonClass="buttonred";}
+            $demandModal = self::linkModalButton($modalid, $demandStatus ,$buttonClass);           
+        
             $hyper_link = $demandModal;
             //$hyper_link .= $id;            
             //$hyper_link .="\">Demande</a>"; 
@@ -403,10 +405,10 @@ class Bootstrap
     }
 
     public static function demande_formdisplay($data,$formationame,$admin,$dmdid = ""){
-        if ($admin){
-            $heading = "<h1>Action on Demande</h1>";
+        if ($admin && $dmdid!="ListFormation"){
+            $heading = "<h4>Action on Demande</h4>";
             $Button ="<button type=\"submit\" class=\"button\" name=\"DemandAction\" value=\"Inscrit\">Inscrit</button>";
-            $Button .="<button type=\"submit\" class=\"buttonred\" name=\"DemandAction\" value=\"Refuse\">Refuse</button>";
+            $Button .="<button type=\"submit\" class=\"buttonred\" name=\"DemandAction\" value=\"Refuse\">Refuse</button></div>";
             $demandidtext = '<div class="demande-group">
             <label for="demandId">Demand Id</label>
             <input type="text" id="demandId" name="demandId" class="demande-group" value="' . $dmdid . '">
@@ -416,30 +418,26 @@ class Bootstrap
         }
         else {
             $demandidtext="";
-            $heading = "<h1>Create Demande</h1>";
-            $Button ="<button type=\"submit\" class=\"btn btn-primary\" name=\"DemandAction\" value=\"Create\">Create Request</button>";
+            $heading = "<h4>Create Demande</h4>";
+            $Button ="<button type=\"submit\" class=\"btn btn-primary\" name=\"DemandAction\" value=\"Create\">Create Request</button></div>";
         }
 
 
         return  $heading . '
     <form action="index.php?view=api/Demand/create/" method="post">
-    <div class="container">'
-    .$demandidtext. '
-       <div class="demande-group">
+    '.$demandidtext. '
+            <div class="container">       
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" class="demande-group" value="' . $data->username . '">
-                </div>
-            </div>
-            <div class="demande-group">
                 <label for="prenom">Prenom</label>
                 <input type="text" id="prenom" name="prenom" class="demande-group" value="' . $data->prenom . '">
                 </div>
-            </div>
             <div class="demande-group">
             <label for="formationame">Formation Name</label>
-            <input type="text" id="formationame" name="formationame" class="demande-group" value="' . $formationame . '">
+            <input type="text" id="formationame" name="formationame" size="50" class="demande-group" value="' . $formationame . '">
             </div>
-
+            <div class="demande-group">
+            
            '.$Button.'
         </form>';
    
@@ -486,12 +484,14 @@ class Bootstrap
                     
                 //$value='<button onclick="index.php?view=api/formation/formationListforUser" class="button">' .$value. '</a>';
                 $createDemandBody = self::demande_formdisplay($user,$formationName,$userType,$id);
-                $demandStatus =(Demand::getDemandById($id))->status;                
+                $demandStatus =(Demand::getDemandById($id))->status; 
+                $buttonClass = "button";  
+                if ($demandStatus == "Refuse") {$buttonClass = "buttonred";}            
                 $modalid = str_replace(' ', '', $formationName);
                 $modalid.= $user->username;
                 
                 $modal2 .= self::viewModal($modalid, Text::getString(['Demand Request', 'Demand Request']), $createDemandBody , '', 'lg');
-                $value = self::linkModalButton($modalid, $demandStatus , 'demand-modal-link');  
+                $value = self::linkModalButton($modalid, $demandStatus ,$buttonClass);  
                 }                 
 
                 if ($value) {
@@ -1085,9 +1085,9 @@ class Bootstrap
     {
         return '<a href="#" class="link ' . $class . '" data-bs-toggle="modal" data-bs-target="#' . $target_id . '">' . $caption . '</a>';
     }
-    public static function linkModalButton(string $target_id, string $caption, string $class = ''): string
+    public static function linkModalButton(string $target_id, string $caption, string $buttonClass): string
     {
-        return '<a href="#" class="button" data-bs-toggle="modal" data-bs-target="#' . $target_id . '">' . $caption . '</a>';
+        return '<a href="#" class="'.$buttonClass.'" data-bs-toggle="modal" data-bs-target="#' . $target_id . '">' . $caption . '</a>';
     }
     
     /**
