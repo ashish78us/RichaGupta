@@ -72,8 +72,8 @@ class Formation extends Controller
 
         $formation = new Formation();
         //var_dump($formation->model);
-        $formation = $formation->model->getAll();          
-
+        //$formation = $formation->model->getAll();   
+        $formation = $formation->model->getByFieldAll("status", "Active")  ;
         Output::render('User_Listformation', $formation);
     }
 

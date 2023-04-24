@@ -356,22 +356,23 @@ class Bootstrap
             $demandStatus =Demand::getDemandStatusIfExist($id);
             //var_dump($demandStatus);
             $modalid = str_replace(' ', '', Demand::getFormationName($id));
-            if (($demandStatus == "Pending" || $demandStatus == "Inscrit") && !($userType)) {$modalid = "#"; }
+            if (($demandStatus == "Pending" || $demandStatus == "Inscrit" || $demandStatus == "Refuse") && !($userType)) {$modalid = "#"; }
             //if ($userType && $demandStatus == "Demand") { $demandStatus = "Inscrit"; } 
             //if ($userType && $demandStatus == "Demand") { $demandStatus = "Inscrit"; } 
             //$modalid= rand();
             $modal2 .= self::viewModal($modalid, Text::getString(['Demand Request', 'Demand Request']), $createDemandBody , '', 'lg');
-            $demandModal = self::linkModal($modalid, $demandStatus , 'demand-modal-link');           
+            $demandModal = self::linkModalButton($modalid, $demandStatus , 'demand-modal-link');           
             
             $hyper_link = $demandModal;
             //$hyper_link .= $id;            
             //$hyper_link .="\">Demande</a>"; 
             
             $body .='<td>'. $hyper_link .'</td>';           
-          
+          /* data for request ==> <th>' . Text::getString(['request_status', 'request_status']) . '</th>
             if ($value) {
                 $body .= '<td>' . $value . '</td>';                     
              }  
+             */
             
  $body .= '</tr>';
             //var_dump($body);
@@ -390,7 +391,7 @@ class Bootstrap
                     <th>' . Text::getString(['date_debut', 'date_debut']) . '</th>
                     <th>' . Text::getString(['date_fin', 'date_fin']) . '</th>
                     <th>' . Text::getString(['demande', 'demande']) . '</th>
-                    <th>' . Text::getString(['request_status', 'request_status']) . '</th>
+                    
                     
                 </tr>
             </thead>
@@ -401,22 +402,29 @@ class Bootstrap
 
     }
 
-    public static function demande_formdisplay($data,$formationame,$admin){
+    public static function demande_formdisplay($data,$formationame,$admin,$dmdid = ""){
         if ($admin){
-
-            $Button ="<button type=\"submit\" class=\"btn btn-primary\" name=\"DemandAction\" value=\"Inscrit\">Inscrit</button>";
-            $Button .="<button type=\"submit\" class=\"btn btn-primary\" name=\"DemandAction\" value=\"Refuse\">Refuse</button>";
-
+            $heading = "<h1>Action on Demande</h1>";
+            $Button ="<button type=\"submit\" class=\"button\" name=\"DemandAction\" value=\"Inscrit\">Inscrit</button>";
+            $Button .="<button type=\"submit\" class=\"buttonred\" name=\"DemandAction\" value=\"Refuse\">Refuse</button>";
+            $demandidtext = '<div class="demande-group">
+            <label for="demandId">Demand Id</label>
+            <input type="text" id="demandId" name="demandId" class="demande-group" value="' . $dmdid . '">
+            </div>
+        ';
 
         }
         else {
+            $demandidtext="";
+            $heading = "<h1>Create Demande</h1>";
             $Button ="<button type=\"submit\" class=\"btn btn-primary\" name=\"DemandAction\" value=\"Create\">Create Request</button>";
         }
 
 
-        return '<h1>Create Demande</h1>
+        return  $heading . '
     <form action="index.php?view=api/Demand/create/" method="post">
-    <div class="container">
+    <div class="container">'
+    .$demandidtext. '
        <div class="demande-group">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" class="demande-group" value="' . $data->username . '">
@@ -438,12 +446,18 @@ class Bootstrap
     }
 
     public static function Admin_Listdemande(array $data){
-        //$modal = self::viewModal('modal-demand-list', Text::getString(['demand detail', 'détail demand']), '', '', 'lg');
+        //$modal1 = self::viewModal('modal-demand-adminlist', Text::getString(['demand details', 'demand detail']), '' , '', 'lg');
+    $modal2 = "";
+    $userObj = new User();
+    //$user = $user->model->getByField('username',$_COOKIE['coo_username']);
+            //var_dump($user);
+            $user = Demand::getUserByid();
+            $userType = $userObj->isAdmin($user->id);
        $body = '<tr>';
 
         foreach ($data as $row) {
             
-            //$formation = new Formation();            
+            $formationName="";            
             foreach ($row as $key => $value) {                
                 
                 if ($key == 'id') {
@@ -462,17 +476,30 @@ class Bootstrap
                     $formation = new Formation(); 
                     $formation = $formation->getForFormation($formationid) ;                                  
                     $value = $formation->name;
+                    $formationName = $value;
                     $value .= '<td>' . $formation->niveau_etude . '</td>';
                     $value .= '<td>' . $formation->status . '</td>';
                     $value .= '<td>' . $formation->date_debut . '</td>';
                     $value .= '<td>' . $formation->date_fin . '</td>';
                 } 
+                if ($key == 'status') {
+                    
+                //$value='<button onclick="index.php?view=api/formation/formationListforUser" class="button">' .$value. '</a>';
+                $createDemandBody = self::demande_formdisplay($user,$formationName,$userType,$id);
+                $demandStatus =(Demand::getDemandById($id))->status;                
+                $modalid = str_replace(' ', '', $formationName);
+                $modalid.= $user->username;
+                
+                $modal2 .= self::viewModal($modalid, Text::getString(['Demand Request', 'Demand Request']), $createDemandBody , '', 'lg');
+                $value = self::linkModalButton($modalid, $demandStatus , 'demand-modal-link');  
+                }                 
 
                 if ($value) {
                     $body .= '<td>' . $value . '</td>';                     
                  }  
 
             }
+            
             $body .= '</tr>';
         }        
        
@@ -489,14 +516,13 @@ class Bootstrap
                     <th>' . Text::getString(['status', 'status']) . '</th>
                     <th>' . Text::getString(['date_debut', 'date_debut']) . '</th>
                     <th>' . Text::getString(['date_fin', 'date_fin']) . '</th>
-                     <th>' . Text::getString(['demande status', 'demande status']) . '</th>                   
-                    
+                    <th>' . Text::getString(['demande status', 'demande status']) . '</th>
                 </tr>
             </thead>
             <tbody>    
                 '  . $body . '
             </tbody>
-        </table>' ;       
+        </table>'  . $modal2 ;       
 
     }
 
@@ -1058,6 +1084,10 @@ class Bootstrap
     public static function linkModal(string $target_id, string $caption, string $class = ''): string
     {
         return '<a href="#" class="link ' . $class . '" data-bs-toggle="modal" data-bs-target="#' . $target_id . '">' . $caption . '</a>';
+    }
+    public static function linkModalButton(string $target_id, string $caption, string $class = ''): string
+    {
+        return '<a href="#" class="button" data-bs-toggle="modal" data-bs-target="#' . $target_id . '">' . $caption . '</a>';
     }
     
     /**

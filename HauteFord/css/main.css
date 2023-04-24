@@ -19,7 +19,34 @@
     width: 100%;
 }
 
-
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #14101a;
+    background-color: #abcc76;
+    border-radius: 6px;
+    outline: none;
+    transition: 0.3s;
+  }
+  .button:hover {
+    background-color: #c2c7c7;
+  }
+  .buttonred {
+    display: inline-block;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: hwb(0 2% 94%);
+    background-color: hwb(0 3% 14%);
+    border-radius: 6px;
+    outline: none;
+    transition: 0.3s;
+  }
+  .buttonred:hover {
+    background-color: #c2c7c7;
+  }
 
 .cour-list td img {
     width: 36px;

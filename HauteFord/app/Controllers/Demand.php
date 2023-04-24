@@ -52,6 +52,15 @@ class Demand extends Controller
           return $demandStatus;
 
      } 
+     public static function getDemandById($demandid)
+     {          
+          $user = self::getUserByid();
+          $demand = new Demand();          
+          $demandid = $demand->model->getByField("id", $demandid);
+          //var_dump($demandid);
+          return $demandid;
+
+     } 
     
      public static function create(): void
      {
@@ -84,7 +93,9 @@ class Demand extends Controller
                         $demand = new Demand();
                     //$formationid = $this->$model->create_formation_model($formation_data);
                     $demand = new Demand();          
-                    $demandObject = $demand->model->returnDemandid(self::getFormationid($_POST['formationame']),self::getUserid($_COOKIE['coo_username']));
+                    //$demandObject = $demand->model->returnDemandid(self::getFormationid($_POST['formationame']),self::getUserid($_COOKIE['coo_username']));
+                    $demandObject = $demand->model->getByField("id", $_POST['demandId']);
+                    //var_dump($demandObject);
                     if($demandObject == null){
                          $demand_data = [ 
                               'userid' => self::getUserid($_COOKIE['coo_username']),
@@ -94,18 +105,17 @@ class Demand extends Controller
                                   $demand = new Demand();
                               //$formationid = $this->$model->create_formation_model($formation_data);
                               $demand = $demand->model->createAny("Demand",$demand_data);
-                              header('Location: index.php?view=api/formation/formationListforUser');
-                              
+                              header('Location: index.php?view=api/demand/listDemand');                             
 
-                    }
-                    
+                    }                  
                     
                     $demandObject->status = $_POST['DemandAction'];
                     $demand->model->update($demandObject);
-                    header('Location: index.php?view=api/formation/formationListforUser');
+                    header('Location: index.php?view=api/demand/listDemand');
            }
            else {
                // Redirection vers le formulaire de signup
+               //var_dump("inside else");
                header('Location: index.php?view=user/signup');
                die;
            }      
@@ -129,6 +139,8 @@ class Demand extends Controller
      }
 
      public static function listDemand() :void {
+
+          Access::checkLoggedIn();
           $demand = new Demand();
         //var_dump($formation->model);
         $demand = $demand->model->getAll();          
