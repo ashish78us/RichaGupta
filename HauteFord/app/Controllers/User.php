@@ -330,7 +330,7 @@ class User extends Controller
 
         // Affichage du formulaire de mise à jour de l'utilisateur dans la vue dynamique générée par le renderer
         Output::render('profileUpdate', $user);
-        $userCourseList = Demand::getDemand()->listCoursesForUserInProfile();
+        $userCourseList = Demand::listCoursesForUserInProfile();
         Output::render('profileCourses', $userCourseList);
      
         //if($this->model->isAdmin($id)){            

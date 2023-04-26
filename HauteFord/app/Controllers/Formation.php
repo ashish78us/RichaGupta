@@ -11,7 +11,7 @@ use stdClass;
 class Formation extends Controller
 {
     protected static Formation $obj_formation;
-    public static function getFormation(): Object {
+    protected static function getFormation(): Object {
         if (!isset(self::$obj_formation)) {
         self::$obj_formation = new Formation();
         }

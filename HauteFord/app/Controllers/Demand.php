@@ -10,7 +10,7 @@ use app\Helpers\Text;
 class Demand extends Controller
 {    
      protected static Demand $obj_demand;
-     public static function getDemand(): Object {
+     protected static function getDemand(): Object {
          if (!isset(self::$obj_demand)) {
          self::$obj_demand = new Demand();
          }

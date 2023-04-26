@@ -93,7 +93,7 @@ public static function getAllCourses($username):array {
         $userCourses= [];        
         $sql= 'SELECT f.name as FormationName, c.name as CourseName, u.username as username,
         fc.period as NumberOfPeriods, fc.determinant as Determinants, fc.prepreq as Prepreq, fc.teacher, 
-        fc.status as Status,  ur.created as DateDeInscription, r.name as ROLE
+        fc.status as Status,  CONVERT(uc.created, CHAR) as DateDeInscription, r.name as ROLE
         from user_course uc
         LEFT JOIN demand d on d.id = uc.userid
         LEFT JOIN course c on c.id = uc.courseid        
@@ -108,7 +108,7 @@ public static function getAllCourses($username):array {
         $request = self::$connect->prepare($sql);
         $request->execute($params);
         while ($data_tmp = $request->fetchObject()) {
-            $userCourses[] = $data_tmp;
+            $userCourses[] = $data_tmp;            
         }        
         return $userCourses;
 

@@ -274,7 +274,7 @@ class Bootstrap
             $body .= '</tr>';
         }
         return '<hr><h2><a href="#profile-courses-list" data-bs-toggle="collapse" role="button" class="text-decoration-none">' . Text::getStringFromKey('courses') . '</a></h2>
-                <table class="table table-striped collapse" id="profile-courses-list">
+                <table class="table table-hover table-striped table-responsive table-borderless table-dt" id="profile-course-list">
                     <thead>
                         <tr>
                             <th>' . Text::getString(['formation name', 'formation name']) . '</th>
