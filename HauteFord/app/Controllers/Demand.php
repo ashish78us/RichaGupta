@@ -105,6 +105,10 @@ class Demand extends Controller
                          $userid = self::getUserIdByName($_POST['name']);
                          User::updateRole($userid,$role->id );
                     }
+                    if ($_POST['DemandAction'] == "Refuse"){
+                         //change user role tp banni
+                         
+                    }
            }
            else {
                // Redirection vers le formulaire de signup
