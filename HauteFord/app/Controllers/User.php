@@ -382,7 +382,7 @@ class User extends Controller
      * @param int $roleid
      * @return void
      */
-    public function updateRole(int $id, int $roleid): void
+    public static function updateRole(int $id, int $roleid): void
     {
         $this->model->updateRole($id, $roleid);
     }

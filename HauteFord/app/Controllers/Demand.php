@@ -102,10 +102,8 @@ class Demand extends Controller
                          //find if there is a record for this user already in demand table and if not then do following
                          $role = Role::getRole();
                          $role = $role->model->getByField("name","etudiant");
-                         var_dump($role);
-                         $user = new User();
-                         $userid = self::getUserByid();
-                         $user->updateRole("4",$role->id );
+                         $userid = self::getUserIdByName($_POST['name']);
+                         User::updateRole($userid,$role->id );
                     }
            }
            else {

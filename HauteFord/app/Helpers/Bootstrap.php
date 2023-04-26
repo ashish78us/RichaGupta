@@ -284,7 +284,8 @@ class Bootstrap
                             <th>' . Text::getString(['prerequisite', 'prérequis']) . '</th>
                             <th>' . Text::getString(['teacher', 'professeur']) . '</th> 
                             <th>' . Text::getString(['status', 'status']) . '</th> 
-                            <th>' . Text::getString(['Role', 'Role']) . '</th>                         
+                            <th>' . Text::getString(['Date de Inscription', 'Date de Inscription']) . '</th> 
+                            <th>' . Text::getString(['Role', 'Role']) . '</th>                                                     
                         </tr>
                     </thead>
                     <tbody>
