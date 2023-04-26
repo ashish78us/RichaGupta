@@ -1,6 +1,4 @@
-
-
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar">
     <div class="container-fluid">
     <a class="navbar-brand" href="#"><img src="image/Logo.png" alt="logo" height ="50" padding ="left 20" ><?php echo \app\Helpers\Text::getString(['HauteEcole', 'projet web'], true, 1);?></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,9 +34,11 @@
                     <li class="nav-item">
                         <a href="index.php?view=api/course/list" class="nav-link"><?php echo \app\Helpers\Text::getStringFromKey('courses');?></a>
                     </li>
+                    <?php if(!(\app\Helpers\Access::isAdmin())) {?>
                     <li class="nav-item">
                         <a href="index.php?view=api/formation/formationListforUser" class="nav-link"><?php echo \app\Helpers\Text::getStringFromKey('formation');?></a>
                     </li>
+                    <?php } ?>
                     <li class="nav-item">
                         <a href="index.php?view=api/user/profile/<?=$_SESSION['userid']?>" class="nav-link"><?php echo \app\Helpers\Text::getStringFromKey('profile');?></a>
                     </li>

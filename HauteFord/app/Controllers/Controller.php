@@ -39,8 +39,7 @@ abstract class Controller
      * @return mixed
      */
     public function get(int $id): mixed
-    {
-        //var_dump($this);
+    {        
         return $this->model->getByField('id', $id);
     }
 

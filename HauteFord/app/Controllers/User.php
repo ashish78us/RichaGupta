@@ -330,14 +330,13 @@ class User extends Controller
 
         // Affichage du formulaire de mise à jour de l'utilisateur dans la vue dynamique générée par le renderer
         Output::render('profileUpdate', $user);
-        $course = new Course();
-        $courses = $course->getByUserEnrol($id);
-        Output::render('profileCourses', $courses);
+        $userCourseList = Demand::getDemand()->listCoursesForUserInProfile();
+        Output::render('profileCourses', $userCourseList);
      
-        if($this->model->isAdmin($id)){            
-            $listUser = $this->model->getUserListIfAdmin($id);
-            Output::render('profileUserListIfAdmin', $listUser);
-        }
+        //if($this->model->isAdmin($id)){            
+            //$listUser = $this->model->getUserListIfAdmin($id);
+            //Output::render('profileUserListIfAdmin', $listUser);
+       //}
 
     }
     public function admin(): void
@@ -409,18 +408,18 @@ class User extends Controller
 
 
 
-    public function exportProfile(int $id ,bool $render = true): void
-    {
-        
+    public function exportProfile(int $id): void
+    {        
+        //var_dump("inside User exportProfiile fun");
         $user = $this->getForProfile($id);
         $userForProfile = self::formatForProfile($user);
         $userForProfile->format = 'json';
 
-        if ($render) {
+        //if ($render) {
             Output::render('exportProfile', $userForProfile);
-        } else {
-            echo json_encode($userForProfile);
-        }
+        //} else {
+           // echo json_encode($userForProfile);
+        //}
 
     }
 

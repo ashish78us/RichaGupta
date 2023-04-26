@@ -15,8 +15,7 @@ class Formation extends Model
         parent::__construct();
     }
     public static function create_formation_model(array $data): int
-    {
-        //var_dump("inside formation model");
+    {        
         $insert = self::$connect->prepare("INSERT INTO formation (name, niveau_etude, status, date_debut, date_fin) VALUES (?, ?, ?, ?, ?)");
         $insert->execute(array_values($data));
         if ($insert->rowCount()) {
@@ -35,14 +34,13 @@ class Formation extends Model
                 f.date_debut,
                f.date_fin
              from formation f
-  ORDER BY f.id';
+        ORDER BY f.id';
 
         $request = self::$connect->prepare($sql);
         $request->execute();
         while ($data_tmp = $request->fetchObject()) {
             $formation[] = $data_tmp;
-        }
-        //var_dump($formation);
+        }        
         return $formation;
     }
     public function Delete_model($id){
@@ -50,7 +48,6 @@ class Formation extends Model
             return false;
         }
         // Construct and execute the DELETE query
-
         $sql = 'DELETE        
         from formation f where f.id=? ';
         $request = self::$connect->prepare($sql);
@@ -58,10 +55,7 @@ class Formation extends Model
         
     }
     public static function getById($id)
-    {
-        //var_dump($id);
-        //return "Inside Formation Model getById";
-        
+    {        
         $sql = 'SELECT f.id,
         f.name,
        f.niveau_etude ,
@@ -69,11 +63,9 @@ class Formation extends Model
         f.date_debut,
        f.date_fin
         from formation f where f.id=? ORDER BY f.id';
-
         $request = self::$connect->prepare($sql);
         $request->execute([$id]);
-        $formationResultById=$request->fetchObject();
-        
+        $formationResultById=$request->fetchObject();        
         return $formationResultById;
     }
 

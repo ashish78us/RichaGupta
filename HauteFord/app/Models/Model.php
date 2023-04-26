@@ -82,7 +82,7 @@ abstract class Model
      */
     public static function getByField(string $field, string $value): mixed
     {
-        $request = self::$connect->prepare("SELECT * FROM " . self::getClassName() . " WHERE $field = ?");
+        $request = self::$connect->prepare("SELECT * FROM " . self::getClassName() . " WHERE $field = ?");        
         $request->execute([$value]);        
         return $request->fetchObject();
     }

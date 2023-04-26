@@ -17,25 +17,17 @@ class output
      */
     public static function getContent(string $view): void
     {
-        //var_dump("Inside output-getContent");
-       // var_dump($view);
         // php array declaration
         $exts = ['html', 'php'];
         // use of SUPER GLOBAL variable ($_SERVER)
-        $route = parse_url($_SERVER['REQUEST_URI']);
-        //var_dump($route);
-        
+        $route = parse_url($_SERVER['REQUEST_URI']);        
         // use of new str_contains php core function (php 8.0+)
-        if (str_contains($route['query'], 'view=api/')) {
-            //var_dump("Inside first IF");
+        if (str_contains($route['query'], 'view=api/')) {            
             $params = [];
             // useful explode function (split a string by a string)
-            $elements = explode('/', rtrim($route['query'], '/'));
-            //var_dump("elements=".$elements);
+            $elements = explode('/', rtrim($route['query'], '/'));            
             // foreach control structure (alternative syntax : key | value)
-            foreach ($elements as $key => $value) {
-                //var_dump("key=".$key);
-                //var_dump($value);
+            foreach ($elements as $key => $value) {                
                 if ($key == 1) {
                     // php concatenation
                     $class = 'app\Controllers\\' . ucfirst($value);
@@ -46,19 +38,14 @@ class output
                     continue;
                 } else {
                     // array push....value of key[3]
-                    $params[] = $value;
-                    //var_dump("value=".$value);
-                }
-                //var_dump("class=".$class);
-                //var_dump("method=".$method);
+                    $params[] = $value;                    
+                }                
             }
-            if (!empty($class) && !empty($method)) {
-                //var_dump("Inside sub-first IF");
+            if (!empty($class) && !empty($method)) {                
                 // use object without "use" keyword
                 // Reflection API : https://www.php.net/manual/fr/book.reflection.php
                 $r = new \ReflectionMethod($class, $method);
-                $nbr = $r->getNumberOfParameters();
-                //var_dump("Number of parameters=".$nbr);
+                $nbr = $r->getNumberOfParameters();                
                 if ($nbr != count($params)) {
                     // php core Exception
                     throw new \Exception('Parameters count mismatch');
@@ -66,10 +53,8 @@ class output
                 // class instantiation (class name can be a variable)
                 $controller = new $class();
                 // check if method exists
-                is_callable($method, true, $callable_name);
-                //var_dump($controller);
-                //var_dump("$callable_name");
-                // method call with parameters (specific php syntax)
+                is_callable($method, true, $callable_name);                
+                // method call with parameters (specific php syntax)                
                 $controller->{$callable_name}(...array_values($params));
             }
         } elseif (!empty($view)) {

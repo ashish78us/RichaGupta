@@ -88,8 +88,31 @@ public static function getAllDemand(string $orderby = ''): array
         return $demand;
     }
 
-    
+public static function getAllCourses($username):array {
+        $params = [$username];
+        $userCourses= [];        
+        $sql= 'SELECT f.name as FormationName, c.name as CourseName, u.username as username,
+        fc.period as NumberOfPeriods, fc.determinant as Determinants, fc.prepreq as Prepreq, fc.teacher, 
+        fc.status as Status, r.name as ROLE
+        from user_course uc
+        LEFT JOIN demand d on d.id = uc.userid
+        LEFT JOIN course c on c.id = uc.courseid        
+        LEFT JOIN formation_course fc on fc.courseid = uc.courseid
+        LEFT JOIN formation f on f.id = fc.formationid
+        LEFT JOIN user u on u.id = uc.userid
+        LEFT JOIN user_role ur on ur.userid = u.id
+        LEFT JOIN role r on r.id = ur.roleid        
         
-    }
+        WHERE u.username = ?
+        ORDER BY f.name';
+        $request = self::$connect->prepare($sql);
+        $request->execute($params);
+        while ($data_tmp = $request->fetchObject()) {
+            $userCourses[] = $data_tmp;
+        }        
+        return $userCourses;
+
+    }         
+}
     
 

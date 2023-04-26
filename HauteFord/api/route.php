@@ -1,22 +1,13 @@
 <?php
-var_dump("inside route.php");
 $api_path = 'api/route/';
-
 $route = parse_url($_SERVER['REQUEST_URI']);
-if  (str_contains($route['path'], $api_path)) {
-    
+if  (str_contains($route['path'], $api_path)) {    
     // auto load classes
-    spl_autoload_register(function ($class) {
-        //var_dump(__DIR__ .  strtolower(str_replace('\\', DIRECTORY_SEPARATOR, $class)) . '.php'); die;
-        //var_dump(DIRECTORY_SEPARATOR);
-        //var_dump("inside spl");
-        //var_dump($class);
-       
+    spl_autoload_register(function ($class) {        
         require __DIR__  . '\\' .  strtolower(str_replace('\\', DIRECTORY_SEPARATOR, $class)) . '.php';
     });
     $params = [];
-    $route = substr($route['path'], strpos($route['path'], strlen($api_path)), strlen($route['path']));
-   // var_dump($route);
+    $route = substr($route['path'], strpos($route['path'], strlen($api_path)), strlen($route['path']));   
     $elements = explode('/', rtrim($route, '/'));
     foreach ($elements as $key => $value) {
         if ($key == 0) {

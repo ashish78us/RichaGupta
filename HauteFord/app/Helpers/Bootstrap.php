@@ -81,9 +81,12 @@ class Bootstrap
      * @return string
      */
   
-    public static function profile(object $data, string $class = ''): string
+    protected static function createTableTwoColumn(String $key, String $value){
+        return '<tr><th>' . Text::getStringFromKey($key) . '</th><td>' . $value . '</td></tr>';
+    }
+    
+     public static function profile(object $data, string $class = ''): string
     {
-        //var_dump($data);
         if ($data->admin==1)
         {$data->admin="Yes";}
         else {$data->admin="No";}
@@ -101,19 +104,20 @@ class Bootstrap
             }
             $tbody .= '<tr><th>' . Text::getStringFromKey($key) . '</th><td>' . $value . '</td></tr>';
         }
+        //var_dump(Demand::getDemand()->listCoursesForUserInProfile());
         return '<h2>' . Text::getStringFromKey('profile') . '</h2>
-                <a href="api/route/user/exportProfile/' . $_SESSION['userid'] . '" class="btn btn-sm btn-primary">Exporter</a>
+                <a href="index.php?view=api/user/exportProfile/' . $_SESSION['userid'] . '" class="btn btn-sm btn-primary">Exporter</a>
                 <table class="table ' . $class . '">' . $tbody . '</table>';
     }
     
 
     public static function exportProfile(object $data): void
     {
-        //var_dump("inside bootstrap exportProfiile");
+       // var_dump("inside bootstrap exportProfiile");
         $filename = $data->username . '_' . time() . '.' . $data->format;
         // Envoi des headers HTTP au browser pour le téléchargement du fichier.
-        header('Content-type: application/json');
-        header('Content-disposition: attachment; filename="' . $filename . '"');
+        //header('Content-type: application/json');
+       // header('Content-disposition: attachment; filename="' . $filename . '"');
         // output du contenu au format json
         if ($data->format == 'json') {
             unset($data->format);
@@ -255,12 +259,16 @@ class Bootstrap
         }
         foreach ($courses as $row) {
             $body .= '<tr>';
-            foreach ($row as $key => $value) {
+            foreach ($row as $key => $value) {               
                 if ($key == 'det') {
                     $value = Text::yesOrNo($value);
                 } elseif ($key == 'courseid') {
                     continue;
                 }
+                elseif ($key == 'username') {
+                    continue;
+                }               
+
                 $body .= '<td>' . $value . '</td>';
             }
             $body .= '</tr>';
@@ -269,12 +277,14 @@ class Bootstrap
                 <table class="table table-striped collapse" id="profile-courses-list">
                     <thead>
                         <tr>
-                            <th>' . Text::getString(['formation', 'formation']) . '</th>
-                            <th>' . Text::getString(['course', 'cours']) . '</th>
+                            <th>' . Text::getString(['formation name', 'formation name']) . '</th>
+                            <th>' . Text::getString(['course name', 'course name']) . '</th> 
                             <th>' . Text::getString(['periods', 'périodes']) . '</th>
                             <th>' . Text::getString(['determining', 'déterminant']) . '</th>
                             <th>' . Text::getString(['prerequisite', 'prérequis']) . '</th>
-                            <th>' . Text::getString(['teacher', 'professeur']) . '</th>
+                            <th>' . Text::getString(['teacher', 'professeur']) . '</th> 
+                            <th>' . Text::getString(['status', 'status']) . '</th> 
+                            <th>' . Text::getString(['Role', 'Role']) . '</th>                         
                         </tr>
                     </thead>
                     <tbody>
@@ -312,77 +322,37 @@ class Bootstrap
     }
 
 
-    public static function User_Listformation(array $data):string{
-        
+    public static function User_Listformation(array $data):string{           
 
     $modal1 = self::viewModal('modal-formation-list', Text::getString(['formation detail', 'détail formation']), '' , '', 'lg');
-    $modal2 = "";
-    //var_dump($modal);
+    $modal2 = "";    
     $userObj = new User();
-    //$user = $user->model->getByField('username',$_COOKIE['coo_username']);
-            //var_dump($user);
-            $user = Demand::getUserByid();
-            $userType = $userObj->isAdmin($user->id);
-            //var_dump($userType);
-
-     $body = '<tr>';
-     
+    $user = Demand::getUserByid();
+    $userType = $userObj->isAdmin($user->id);
+    $body = '<tr>';
         foreach ($data as $row) {
-          
-            //$formation = new Formation();            
-            foreach ($row as $key => $value) {
-                
-                if ($key == 'name') {
-                    //$value = self::linkModal('modal-formation-list', $value, 'formation-modal-link');                                     
-                    
-                }  
+             foreach ($row as $key => $value) { 
                 if ($key == 'id') {
-                    $id=$value;                                   
-                    
+                    $id=$value;      
                 }           
                 if ($value) {
                     $body .= '<td>' . $value . '</td>';                     
-                 }  
-
-            }
-
-            //$hyper_link ="<a class=\"btn btn-primary\" role=\"button\" href=\"index.php?view=api/Demand/formdisplay/";
-            
-            //$formation = new Formation();
-            //$formation = $formation->model->getByField('id',$id);
-            //Output::render('demande_formdisplay',$user, $formation->name);
-            //$form=self::demande_formdisplay($user,$formation);
+                 } 
+            }           
             $createDemandBody = self::demande_formdisplay($user,Demand::getFormationName($id),$userType,"ListFormation");
-            $demandStatus =Demand::getDemandStatusIfExist($id);
-            //var_dump($demandStatus);
+            $demandStatus =Demand::getDemandStatusIfExist($id);            
             $modalid = str_replace(' ', '', Demand::getFormationName($id));
             if (($demandStatus == "Pending" || $demandStatus == "Inscrit" || $demandStatus == "Refuse") && !($userType)) {$modalid = "#"; }
-            //if ($userType && $demandStatus == "Demand") { $demandStatus = "Inscrit"; } 
-            //if ($userType && $demandStatus == "Demand") { $demandStatus = "Inscrit"; } 
-            //$modalid= rand();
+            
             $modal2 .= self::viewModal($modalid, Text::getString(['Demand Request', 'Demand Request']), $createDemandBody , '', 'lg');
             $buttonClass="button";
             if($demandStatus == "Refuse"){$buttonClass="buttonred";}
-            $demandModal = self::linkModalButton($modalid, $demandStatus ,$buttonClass);           
-        
-            $hyper_link = $demandModal;
-            //$hyper_link .= $id;            
-            //$hyper_link .="\">Demande</a>"; 
-            
-            $body .='<td>'. $hyper_link .'</td>';           
-          /* data for request ==> <th>' . Text::getString(['request_status', 'request_status']) . '</th>
-            if ($value) {
-                $body .= '<td>' . $value . '</td>';                     
-             }  
-             */
-            
- $body .= '</tr>';
-            //var_dump($body);
-        }        
-        
-        //var_dump($body);
-    //include_once ROOT_PATH . '/view/admin/menu.html';
-    return '<h2>' . Text::getStringFromKey('formation') . '</h2>
+            $demandModal = self::linkModalButton($modalid, $demandStatus ,$buttonClass); 
+            $body .='<td>'. $demandModal .'</td>';            
+            $body .= '</tr>';
+           
+        }   
+         return '<h2>' . Text::getStringFromKey('formation') . '</h2>
         <table class="table table-hover table-dark table-striped table-responsive table-borderless table-dt" id="formation-list">
             <thead>
                 <tr>
@@ -392,16 +362,13 @@ class Bootstrap
                     <th>' . Text::getString(['status', 'status']) . '</th>
                     <th>' . Text::getString(['date_debut', 'date_debut']) . '</th>
                     <th>' . Text::getString(['date_fin', 'date_fin']) . '</th>
-                    <th>' . Text::getString(['demande', 'demande']) . '</th>
-                    
-                    
+                    <th>' . Text::getString(['demande', 'demande']) . '</th>  
                 </tr>
             </thead>
             <tbody>    
                 ' . $body . '
             </tbody>
-        </table>' . $modal1 . $modal2 ;       
-
+        </table>' . $modal1 . $modal2 ; 
     }
 
     public static function demande_formdisplay($data,$formationame,$admin,$dmdid = ""){
@@ -470,9 +437,8 @@ class Bootstrap
                 } 
 
                 if ($key == 'formationid') {
-                    $formationid=$value;
-                    $formation = new Formation(); 
-                    $formation = $formation->getForFormation($formationid) ;                                  
+                    $formationid=$value;                                                      
+                    $formation = Formation::getFormationByField("id", $formationid);
                     $value = $formation->name;
                     $formationName = $value;
                     $value .= '<td>' . $formation->niveau_etude . '</td>';
@@ -723,32 +689,20 @@ class Bootstrap
     }
     
     public static function List_formation(array $data): string
-    {
-        //var_dump("Inside Boot and List_formation");
+    {        
        $modal = self::viewModal('modal-formation-list', Text::getString(['formation detail', 'détail formation']), '', '', 'lg');
        $body = '<tr>';
-        foreach ($data as $row) {
-            
-            //$formation = new Formation();            
-            foreach ($row as $key => $value) {
-                
-                if ($key == 'name') {
-                    $value = self::linkModal('modal-formation-list', $value, 'formation-modal-link'); 
-                    //var_dump($value);                  
-                    
-                }  
+        foreach ($data as $row) {             
+            foreach ($row as $key => $value) { 
                 if ($key == 'id') {
-                    $id=$value; 
-                    //var_dump($value);
-                    //var_dump($id);                  
-                    
+                    $id=$value;        
                 }           
                 if ($value) {
                     $body .= '<td>' . $value . '</td>';                     
-                 }  
+                 } 
 
             }
-            $hyper_link ="<a class=\"btn btn-primary\" role=\"button\" href=\"index.php?view=api/Formation/update/";
+            $hyper_link ="<a class=\"btn btn-primary\" role=\"button\" href=\"index.php?view=api/Formation/updateDisplay/";
             $hyper_link .= $id;            
             $hyper_link .="\">Update</a>";           
 
@@ -756,13 +710,13 @@ class Bootstrap
             //$hyper_link = '<a href=\"index.php?view=api/Formation/delete/" onclick="(confirmDelete('.$id.'})" class="btn btn-primary btn-sm" role="button">Delete</a>';
             $classname = ",Formation";
             $functionname = ",delete";
-            //var_dump($classname.$id);
+            //var_dump($classname.$id);            
             $hyper_link = "<a class=\"btn btn-primary\" role=\"button\" onclick=\"confirmDelete(";
             $hyper_link .= $id;
             //$hyper_link .= $classname;
             //$hyper_link .= $functionname;
             $hyper_link .=")\">Delete</a>";
-            $body .='<td>'. $hyper_link .'</td>'; 
+            $body .='<td>'. $hyper_link .'</td>';            
             $body .= '</tr>';
             //var_dump($body);
         }        
@@ -906,7 +860,7 @@ class Bootstrap
 
        return '<hr>
        
-       <form action="index.php?view=api/formation/update_row/' . $data->id  . '" method="post" enctype="multipart/form-data">
+       <form action="index.php?view=api/formation/updateRow/' . $data->id  . '" method="post" enctype="multipart/form-data">
        
        <div class="cantainer">
        <h1 class ="form-title">Update_formation</h1> 

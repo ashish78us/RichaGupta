@@ -154,8 +154,9 @@ class User extends Model
      */
     public static function updateRole(int $id, int $roleid): bool
     {
-        $request = self::$connect->prepare("INSERT INTO user_role (userid, roleid, created) VALUES (?, ?, NOW()) ON DUPLICATE KEY UPDATE roleid = ?");
-        $request->execute([$id, $roleid, $roleid]);
+        $params = [$roleid,$id];
+        $request = self::$connect->prepare("UPDATE user_role set roleid = ? where userid = ?");
+        $request->execute($params);
         if ($request->rowCount()) {
             return true;
         }
