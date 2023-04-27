@@ -69,7 +69,7 @@ class Course extends Controller
      * @param int $userid
      * @return void
      */
-    public function enrol(int $courseid, int $userid): void
+    public function enrol(int $courseid, int $userid, $formationid): void
     {
         if (self::getEnrol($courseid, $userid)) {
             Output::createAlert('Utilisateur déjà inscrit à ce cours', 'danger', 'index.php?view=api/course/list');
@@ -80,7 +80,7 @@ class Course extends Controller
                 Output::createAlert('L\'inscription a échoué, les prérequis ne sont pas satisfaits', 'danger', 'index.php?view=api/course/list');
             }
             // Inscription
-            if ($this->model->enrol($courseid, $userid)) {
+            if ($this->model->enrol2($courseid, $userid, $formationid)) {
                 Output::createAlert('Utilisateur inscrit avec succès', 'success', 'index.php?view=api/course/list');
             } else {
                 Output::createAlert('L\'inscription a échoué', 'danger', 'index.php?view=api/course/list');

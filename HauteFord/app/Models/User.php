@@ -153,7 +153,7 @@ class User extends Model
      * @return bool
      */
     public static function updateRole(int $id, int $roleid): bool
-    {
+    {        
         $params = [$roleid,$id];
         $request = self::$connect->prepare("UPDATE user_role set roleid = ? where userid = ?");
         $request->execute($params);

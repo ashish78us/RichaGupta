@@ -128,14 +128,7 @@ class Bootstrap
                 echo $key .' : '. $value . "\n";
             }
         }
-    }
-
-
-    /**
-     * @param object $data
-     * @return void
-     */
-    
+    }  
     
     public static function exportImage(object $data): void
     {
@@ -147,35 +140,36 @@ class Bootstrap
 
     }
     
-    public static function exportCourseList(array $data): void
+    public static function exportCourseList( $data): void
     {
-        //php trick : convertir un tableau d'objets en tableau associatif (attention, c'est relativement lent comme process)
-        $data = json_decode(json_encode($data), true);
-        $filename = 'courses_list_' . time() . '.csv';
-        // ouverture du flux (en mode écriture)
-//        $ressource = fopen($filename, 'w');
-//        foreach ($data as $course) {
-//            // ajout d'une ligne au format csv
-//            fputcsv($ressource, $course);
-//        }
-//        // fermeture du flux
-//        fclose($ressource);
-
+        /// var_dump("inside bootstrap exportProfiile");
+        //$filename = $data->username . '_' . time() . '.' . $data->format;
         // Envoi des headers HTTP au browser pour le téléchargement du fichier.
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
-        // output du contenu du fichier créé
-        // echo file_get_contents($filename);
-        // suppression du fichier créé sur le serveur
-        // unlink($filename);
-
-        // alternative sans écriture sur le disque
-        header('Cache-Control: no-store');
-        $buffer = fopen('php://output', 'r+');
-        foreach ($data as $course) {
-            fputcsv($buffer, $course);
-        }
-        fclose($buffer);
+        //header('Content-type: application/json');
+       // header('Content-disposition: attachment; filename="' . $filename . '"');
+        // output du contenu au format json
+        /*if ($data->format == 'json') {
+            unset($data->format);
+            echo json_encode($data);
+        } else {
+            */
+            //unset($data->format);
+            //foreach ($data as $key => $value) {
+              //  echo $key .' : '. $value . "\n";
+           // }
+           $body= "";
+            foreach ($data as $row) {                
+                foreach ($row as $key => $value) { 
+                    //var_dump($key);   
+                    $body .= $key .' : '. $value ;                
+                    if ($key == 'FormationName') {
+                        $body .= "\n"; 
+                    }
+                }
+                $body .= "                 ";
+            }
+            echo $body;
+        //}
 
     }
 
@@ -253,7 +247,7 @@ class Bootstrap
     {
         $body = '';
         if (!empty($_SESSION['userid'])) {
-            $exportlink = '<a href="api/route/user/exportCourseList/' . $_SESSION['userid'] . '" class="btn btn-sm btn-primary">Exporter</a>';
+            $exportlink = '<a href="index.php?view=api/user/exportCourseList/' . $_SESSION['userid'] . '" class="btn btn-sm btn-primary">Exporter</a>';
         } else {
             $exportlink = '';
         }
@@ -521,11 +515,17 @@ class Bootstrap
             // seconde boucle pacourant chaque objet du tableau d'objets $data
             foreach ($row as $key => $value) {
                 // concaténation de chaque élément (propriété) de l'objet au sein d'une balise HTML <td> représentant une cellule du tableau HTML
+                //var_dump($key);
                 if ($key == 'det') {
                     $value = Text::yesOrNo($value);
                 } elseif ($key == 'courseid') {
                     continue;
-                }                
+                }
+                elseif ($key == 'formation_name') {
+                   $formation = Formation::getFormationByField("name",$value);
+                    //var_dump($formation);
+                }
+
                 $body .= '<td>' . $value . '</td>';
             }
             $ifAdmin = $user->isAdmin(User::getUserByid()->id);
@@ -534,8 +534,8 @@ class Bootstrap
             }
             else {
                     $column = "<th>'" . Text::getString(['enrol', 'inscrire']) . "'<span class=\"icon-arrow\">&UpArrow;</span></th>"; 
-                    if (!$course->getEnrol($row->courseid, $_SESSION['userid'])) {                
-                    $body .= '<td><a href="index.php?view=api/course/enrol/' . $row->courseid . '/' . $_SESSION['userid'] . '" class="btn btn-sm btn-success">+</a></td>';
+                    if (!$course->getEnrol($row->courseid, $_SESSION['userid'], $formation->id)) {                
+                    $body .= '<td><a href="index.php?view=api/course/enrol/' . $row->courseid . '/' . $_SESSION['userid'] .'/'. $formation->id. '" class="btn btn-sm btn-success">+</a></td>';
                     }                
                     else {
                     $body .= '<td>Déjà inscrit</td>';

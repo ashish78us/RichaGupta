@@ -388,8 +388,9 @@ class User extends Controller
      * @return void
      */
     public static function updateRole(int $id, int $roleid): void
-    {
-        $this->model->updateRole($id, $roleid);
+    {        
+        $user = new User();
+        $user->model->updateRole($id, $roleid);
     }
 
     /**
@@ -422,6 +423,20 @@ class User extends Controller
 
         //if ($render) {
             Output::render('exportProfile', $userForProfile);
+        //} else {
+           // echo json_encode($userForProfile);
+        //}
+
+    }
+    public function exportCourseList(int $id): void
+    {        
+        //var_dump("inside User exportProfiile fun");
+        $userCourseList = Demand::listCoursesForUserInProfile();
+        //$courseList = self::formatForProfile($userCourseList);
+        //$userCourseList->format = 'json';
+
+        //if ($render) {
+            Output::render('exportCourseList', $userCourseList);
         //} else {
            // echo json_encode($userForProfile);
         //}

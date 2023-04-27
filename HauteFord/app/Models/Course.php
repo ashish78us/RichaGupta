@@ -177,6 +177,15 @@ class Course extends Model
         }
         return false;
     }
+    public static function enrol2(int $courseid, int $userid,$formationid): bool
+    {
+        $request = self::$connect->prepare("INSERT INTO user_course (userid, courseid,formationid, created) VALUES (?, ?,?, NOW())");
+        $request->execute([$userid, $courseid,$formationid]);
+        if ($request->rowCount()) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * @param int $courseid

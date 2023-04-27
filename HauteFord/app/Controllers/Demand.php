@@ -94,15 +94,15 @@ class Demand extends Controller
                               $demand = $demand->model->createAny("Demand",$demand_data);
                               header('Location: index.php?view=api/demand/listDemand'); 
                     }     
-                    $demandObject->status = $_POST['DemandAction'];
+                    $demandObject->status = $_POST['DemandAction'];                    
                     $demand->model->update($demandObject);
                     header('Location: index.php?view=api/demand/listDemand');
-                    //update role of user to etudiant
+                    //update role of user to etudiant                    
                     if ($_POST['DemandAction'] == "Inscrit"){
                          //find if there is a record for this user already in demand table and if not then do following
-                         $role = Role::getRole();
-                         $role = $role->model->getByField("name","etudiant");
-                         $userid = self::getUserIdByName($_POST['name']);
+                         $role = Role::getRole();                         
+                         $role = $role->model->getByField("name","etudiant");                         
+                         $userid = self::getUserIdByName($_POST['name']);                         
                          User::updateRole($userid,$role->id );
                     }
                     if ($_POST['DemandAction'] == "Refuse"){
@@ -125,7 +125,7 @@ class Demand extends Controller
      }
      protected static function getFormationIdByName($formationame)
      {
-          $formation = Formation::getFormation();
+          $formation = new Formation();
           $formation = $formation->model->getByField("name",$formationame);
           return $formation->id;          
      }

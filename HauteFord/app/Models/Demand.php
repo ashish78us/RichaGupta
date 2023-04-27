@@ -91,30 +91,29 @@ public static function getAllDemand(string $orderby = ''): array
 public static function getAllCourses($username):array {
         $params = [$username];
         $userCourses= [];        
-        $sql= 'SELECT f.name as FormationName, c.name as CourseName, u.username as username,
-        fc.period as NumberOfPeriods, fc.determinant as Determinants, fc.prepreq as Prepreq, fc.teacher, 
-        fc.status as Status,  CONVERT(uc.created, CHAR) as DateDeInscription, r.name as ROLE
+        $sql= 'SELECT f.name as FormationName, c.name as CourseName, u.username as username,fc.period as NumberOfPeriods, fc.determinant as Determinants, fc.prepreq as Prepreq, fc.teacher, 
+        fc.status as Status,  CONVERT(uc.created, CHAR) as DateDeInscription, r.name as ROLE  
         from user_course uc
-        LEFT JOIN demand d on d.id = uc.userid
-        LEFT JOIN course c on c.id = uc.courseid        
-        LEFT JOIN formation_course fc on fc.courseid = uc.courseid
-        LEFT JOIN formation f on f.id = fc.formationid
+        left join demand d on d.userid = uc.userid and d.status = \'Inscrit\' and d.formationid = uc.formationid
+        left join formation f on f.id = uc.formationid        
+        left join course c on c.id = uc.courseid
         LEFT JOIN user u on u.id = uc.userid
-        LEFT JOIN user_role ur on ur.userid = u.id
+        LEFT JOIN formation_course fc on fc.formationid = d.formationid and fc.courseid = uc.courseid
+        LEFT JOIN user_role ur on ur.userid = uc.userid
         LEFT JOIN role r on r.id = ur.roleid        
         
-        WHERE u.username = ?
+        WHERE u.username = ? and d.status = \'Inscrit\'
         ORDER BY f.name';
         $request = self::$connect->prepare($sql);
         $request->execute($params);
-        while ($data_tmp = $request->fetchObject()) {
-        $request->execute();
+       
         while ($data_tmp = $request->fetchObject()) {
             $userCourses[] = $data_tmp;            
         }        
         return $userCourses;
 
-    }         
+            
 }
     
 
+    }    
