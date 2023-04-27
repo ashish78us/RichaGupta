@@ -144,15 +144,21 @@ abstract class Model
        $arraycount = count($data);
         $columns = self::getColumns();
         $fields = "";
+        $nofvalues = "?";
         foreach($data as $key => $val){
            if ($count == $arraycount-1){
-            $fields .= $key;
+            $fields .= $key;            
             break;
            }
-           else{$fields .= $key . ",";}            
+           else{
+            $fields .= $key . ",";
+            $nofvalues .= ",?";
+        }            
             $count= $count +1;
-        }        
-        $insert = self::$connect->prepare("INSERT INTO $tablename ($fields) VALUES (?, ?, ?)");
+        }
+        var_dump($nofvalues);
+               
+        $insert = self::$connect->prepare("INSERT INTO $tablename ($fields) VALUES ($nofvalues)");
         $insert->execute(array_values($data));
         if ($insert->rowCount()) {
             // retourne l'id du champ créé en DB par l'INSERT

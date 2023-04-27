@@ -294,6 +294,11 @@ class User extends Controller
             }
         }
     }
+    public static function getUserByid(){
+        $user = new User();
+        $user = $user->model->getByField('username',$_COOKIE['coo_username']);
+        return $user;
+   }
 
     public function logout(): void
     {

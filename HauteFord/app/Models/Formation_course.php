@@ -2,7 +2,7 @@
 
 namespace app\Models;
 
-class Course_formation extends Model
+class Formation_course extends Model
 
     {  
     /**

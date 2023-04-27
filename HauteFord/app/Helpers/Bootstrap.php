@@ -517,6 +517,7 @@ class Bootstrap
             $course = new Course();
             // concaténation de la balise HTML <tr> dans la variable $body, représentant le début d'une ligne dans le tableau HTML
             $body .= '<tr>';
+            $user = new User();
             // seconde boucle pacourant chaque objet du tableau d'objets $data
             foreach ($row as $key => $value) {
                 // concaténation de chaque élément (propriété) de l'objet au sein d'une balise HTML <td> représentant une cellule du tableau HTML
@@ -524,14 +525,22 @@ class Bootstrap
                     $value = Text::yesOrNo($value);
                 } elseif ($key == 'courseid') {
                     continue;
-                }
+                }                
                 $body .= '<td>' . $value . '</td>';
             }
-            if (!$course->getEnrol($row->courseid, $_SESSION['userid'])) {
-                $body .= '<td><a href="index.php?view=api/course/enrol/' . $row->courseid . '/' . $_SESSION['userid'] . '" class="btn btn-sm btn-success">+</a></td>';
-            } else {
-                $body .= '<td>Déjà inscrit</td>';
+            $ifAdmin = $user->isAdmin(User::getUserByid()->id);
+            if($ifAdmin){                
+                $column="";
             }
+            else {
+                    $column = "<th>'" . Text::getString(['enrol', 'inscrire']) . "'<span class=\"icon-arrow\">&UpArrow;</span></th>"; 
+                    if (!$course->getEnrol($row->courseid, $_SESSION['userid'])) {                
+                    $body .= '<td><a href="index.php?view=api/course/enrol/' . $row->courseid . '/' . $_SESSION['userid'] . '" class="btn btn-sm btn-success">+</a></td>';
+                    }                
+                    else {
+                    $body .= '<td>Déjà inscrit</td>';
+                    }                
+                }    
             $body .= '</tr>';
             // concaténation de la balise fermante HTML <tr> dans la variable $body, représentant la fin d'une ligne dans le tableau HTML
         }
@@ -560,8 +569,8 @@ class Bootstrap
                             <th>' . Text::getString(['periods', 'périodes']) . '<span class="icon-arrow">&UpArrow;</span></th>
                             <th>' . Text::getString(['determining', 'déterminant']) . '<span class="icon-arrow">&UpArrow;</span></th>
                             <th>' . Text::getString(['prerequisite', 'prérequis']) . '<span class="icon-arrow">&UpArrow;</span></th>
-                            <th>' . Text::getString(['teacher', 'professeur']) . '<span class="icon-arrow">&UpArrow;</span></th>
-                            <th>' . Text::getString(['enrol', 'inscrire']) . '<span class="icon-arrow">&UpArrow;</span></th>
+                            <th>' . Text::getString(['teacher', 'professeur']) . '<span class="icon-arrow">&UpArrow;</span></th>                            
+                            '.$column.'
                         </tr>
                     </thead>
                     <tbody>
@@ -801,7 +810,7 @@ class Bootstrap
     {
         include_once ROOT_PATH . '/view/admin/menu.html';
         return '<h2>Création d\'un nouveau cours</h2>
-                <form action="index.php?view=api/Course_formation/create/" method="post">
+                <form action="index.php?view=api/Formation_course/create/" method="post">
                     <label for="cc-formation">Formation</label>
                     <select name="cc-formation" id="cc-formation" class="form-control">
                     ' . self::getFormOptions($data_formation) . '
