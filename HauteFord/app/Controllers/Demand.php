@@ -35,7 +35,7 @@ class Demand extends Controller
           return $user;
      }
      public static function getFormationName($id){
-          $formation = Formation::getFormation();
+          $formation = new Formation();
           $formation = $formation->model->getByField('id',$id);
           return $formation->name;
      } 

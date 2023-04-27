@@ -113,8 +113,7 @@ class Course extends Controller
      */
     public function createCourse(): void
     {
-        //Access::checkAdmin();
-
+        Access::checkAdmin();
         $formation = new Formation();
         $data_formation = $formation->model->getAllForForm('name');
         $course = new Course();

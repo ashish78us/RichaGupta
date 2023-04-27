@@ -108,6 +108,8 @@ public static function getAllCourses($username):array {
         $request = self::$connect->prepare($sql);
         $request->execute($params);
         while ($data_tmp = $request->fetchObject()) {
+        $request->execute();
+        while ($data_tmp = $request->fetchObject()) {
             $userCourses[] = $data_tmp;            
         }        
         return $userCourses;
