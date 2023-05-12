@@ -26,5 +26,6 @@ require_once __DIR__ . '/view/header.html';
 require_once __DIR__ . '/view/menu.php';
 require_once __DIR__ . '/view/default.php';
 require_once __DIR__ . '/view/footer.html';
+require_once 'C:\wamp64\bin\php\resources-composer\vendor\autoload.php';
 
 ?>

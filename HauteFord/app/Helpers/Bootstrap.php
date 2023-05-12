@@ -463,11 +463,16 @@ class Bootstrap
             
             $body .= '</tr>';
         }        
-       
         
-    //include_once ROOT_PATH . '/view/admin/Formation.html';
-    return '<h2>' . Text::getStringFromKey('demand list') . '</h2>
-        <table class="table table-hover table-dark table-striped table-responsive table-borderless table-dt" id="demand-list">
+        $myfile = fopen(ROOT_PATH . '/view/admin/index.html', "r") or die("Unable to open file!");
+        $indexhtml= fread($myfile,filesize(ROOT_PATH . '/view/admin/index.html'));
+        fclose($myfile);
+        
+        
+    //include_once ROOT_PATH . '/view/admin/index.html';
+    return '<div class="w3-sidebar " style="width:auto">'.$indexhtml .'</div><h2>' . Text::getStringFromKey('demand list') . '</h2>
+    
+        <table class="table right table-hover table-dark table-striped table-responsive table-borderless table-dt" id="demand-list" style="width:auto">
             <thead>
                 <tr>
                     <th>id</th>                    

@@ -1,4 +1,11 @@
-<div class="include-admin-menu"></div>
+<?php
+$myfile = fopen(ROOT_PATH . '/view/admin/index.html', "r") or die("Unable to open file!");
+        $indexhtml= fread($myfile,filesize(ROOT_PATH . '/view/admin/index.html'));
+        fclose($myfile);
+        ?>
+
+<div class="w3-sidebar " style="width:auto"><?php echo $indexhtml ?></div>
+<div class="relative" >
 <h2>Gestion des formations et les cours</h2>
 <ul>
   <li><a href="index.php?view=view/admin/Formation">Créer une formation</a></li>
@@ -9,3 +16,5 @@
   
 
 </ul>
+</div>
+

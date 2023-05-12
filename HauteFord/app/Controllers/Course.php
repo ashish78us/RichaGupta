@@ -6,6 +6,7 @@ use app\Helpers\Bootstrap;
 use app\Helpers\Output;
 use app\Helpers\Access;
 use app\Helpers\Text;
+
 class Course extends Controller
 {
     /**
