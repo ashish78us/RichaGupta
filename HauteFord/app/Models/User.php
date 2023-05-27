@@ -58,6 +58,12 @@ class User extends Model
         $result->execute([$login, $email]);
         return $result->fetchColumn();
     }
+    public static function getByUsernameAndEmail(string $login, string $email)
+    {
+        $result = self::$connect->prepare("SELECT * FROM user WHERE username = ? AND email = ?");
+        $result->execute([$login, $email]);
+        return $result->fetchObject();
+    }
     public static function getAll(string $orderby = ''): array
     {
         $users = [];

@@ -106,7 +106,7 @@ class Bootstrap
         }
         //var_dump(Demand::getDemand()->listCoursesForUserInProfile());
         return '<h2>' . Text::getStringFromKey('profile') . '</h2>
-                <a href="index.php?view=api/user/exportProfile/' . $_SESSION['userid'] . '" class="btn btn-sm btn-primary">Exporter</a>
+                <a href="index.php?view=api/user/exportProfile/' . $_SESSION['userid'] . '" class="btn btn-sm btn-primary">Exporter</a>                
                 <table class="table ' . $class . '">' . $tbody . '</table>';
     }
     

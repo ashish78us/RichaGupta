@@ -12,6 +12,16 @@ use Firebase\JWT\Key;
 
 class User extends Controller
 {
+    protected static User $obj_User;
+     public static function getUser(): Object {
+         if (!isset(self::$obj_User)) {
+         self::$obj_User = new User();
+         }
+         return self::$obj_User;
+     } 
+    
+    
+    
     protected static array $images = [
         'image/gif',
         'image/jpeg',
@@ -249,12 +259,12 @@ class User extends Controller
     {
         
         $key = 'example_key';
-$payload = [
-    'iss' => 'Ashish',
-    'aud' => 'http://example.com',
-    'iat' => 1356999524,
-    'nbf' => 1357000000
-];
+        $payload = [
+            'iss' => 'Ashish',
+            'aud' => 'http://example.com',
+            'iat' => 1356999524,
+            'nbf' => 1357000000
+        ];
 
 /**
  * IMPORTANT:
@@ -327,7 +337,7 @@ $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
                     $cookie_username = "coo_username";
                     $cookie_userid = $user->username;
                     setcookie($cookie_username, $cookie_userid, 0, "/");                    
-                    Output::createAlert('Bienvenue ' . $user->username.$jwt, 'success', $view . $user->id);
+                    Output::createAlert('Bienvenue ' . $user->username, 'success', $view . $user->id);
                     
                 }
             } else {
@@ -340,6 +350,11 @@ $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
         $user = $user->model->getByField('username',$_COOKIE['coo_username']);
         return $user;
    }
+   public static function getUserByUsername($username){
+    $user = new User();
+    $user = $user->model->getByField('username',$username);
+    return $user;
+}
 
     public function logout(): void
     {
