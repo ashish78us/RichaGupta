@@ -28,12 +28,11 @@ class Jwttoken extends Controller
         if (!$_POST) {
             header('HTTP/1.1 405');
         }
-        if (!empty($_POST['loginid']) && !empty($_POST['emailid']) && !empty($_POST['newPassword']) && !empty($_POST['confirmNewPassword']
-         ))
+        if (!empty($_POST['loginid']) && !empty($_POST['emailid']) )
         {
             $loginid=$_POST['loginid'];
             $email=$_POST['emailid'];
-            $newPassword=$_POST['newPassword'];
+            //$newPassword=$_POST['newPassword'];
             $user = new User();
             $user=$user->getUserByUsername($loginid);
             if($user!=null){
@@ -53,7 +52,7 @@ class Jwttoken extends Controller
                             $payload = [
                                 'username' => $loginid,
                                 'email' => $email,
-                                'new_password' =>  $newPassword,
+                                //'new_password' =>  $newPassword,
                                 'timestamp' => time()                   
                             ];    
                             $jwt = JWT::encode($payload, $key, 'HS256');
@@ -69,8 +68,6 @@ class Jwttoken extends Controller
                             ];
                             $jwtTokeninsert=$objJwttoken->model->insertToken($jwttoken_data); 
                             if ($jwtTokeninsert!=null) {
-                                
-                                
                                 $passwordResetLink="http://localhost".$route['path']."?".$elements[0]."/".$elements[1]."/"."validateToken"."/".$jwt;
                             } 
                         }//Token already exist for user and not expired. 
@@ -108,10 +105,10 @@ class Jwttoken extends Controller
                                 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
                                 
                                 if(!$mail->send()) {
-                                    echo 'Message could not be sent.';
+                                    echo 'Password reset link could not be sent.';
                                     echo 'Mailer Error: ' . $mail->ErrorInfo;
                                 } else {
-                                    echo 'Message has been sent';
+                                    echo 'Password reset link has been sent to registered email id.';
                                 }
                 
                 }
@@ -126,7 +123,7 @@ class Jwttoken extends Controller
         }
      } 
 
-     public static function validateToken($recJwtoken){        
+     public static function validateToken($recJwtoken){
         $key = "HauteFord123@_key";
         JWT::$leeway = 60; // $leeway in seconds
         $decoded = JWT::decode($recJwtoken, new Key($key, 'HS256'));
@@ -139,12 +136,13 @@ class Jwttoken extends Controller
                 $user = User::getUser();
                 $getUser=$user->model->getByUsernameAndEmail($decoded->username,$decoded->email);
                     if($getUser!=null){                    
-                        $getUser->password = password_hash($decoded->new_password, PASSWORD_DEFAULT);
-                        $user->model->update($getUser); 
-                        $jwtTokenrecord->used=1;
-                        $jwtTokenrecord->comment=$jwtTokenrecord->comment ." Passwords was reset successfully on ".date("Y-m-d h:i:sa", time());
-                        $jwttoken->model->update($jwtTokenrecord) ;                    
-                        Output::createAlert("Password updated Successfully. You can now login with new password.");
+                       // $getUser->password = password_hash($decoded->new_password, PASSWORD_DEFAULT);
+                        //$user->model->update($getUser); 
+                        //$jwtTokenrecord->used=1;
+                        //$jwtTokenrecord->comment=$jwtTokenrecord->comment ." Passwords was reset successfully on ".date("Y-m-d h:i:sa", time());
+                        //$jwttoken->model->update($jwtTokenrecord) ;                    
+                        //Output::createAlert("Password updated Successfully. You can now login with new password.");
+                        Output::render('changePassword',$recJwtoken);
                     }
                     else {//User does not exist
                         Output::createAlert("User does not exist any more");
@@ -157,5 +155,40 @@ class Jwttoken extends Controller
             else{Output::createAlert("Token Expired. Create new request.");}
             
         }//$jwttoken!=null
-     }     
+     } 
+     
+     public static function resetPassword($recJwtoken){
+        $key = "HauteFord123@_key";
+        JWT::$leeway = 60; // $leeway in seconds
+        $decoded = JWT::decode($recJwtoken, new Key($key, 'HS256'));
+        $jwttoken = self::getJwttoken();  
+        $jwtTokenrecord=$jwttoken->model->getRecordByToken($decoded->username,$recJwtoken);
+        if ($jwtTokenrecord!=null){
+            if($jwtTokenrecord->expiry>time()){
+                if($jwtTokenrecord->used!=1){
+                //Output::createAlert("token is valid and expiry is=".$jwtTokenrecord->expiry);
+                $user = User::getUser();
+                $getUser=$user->model->getByUsernameAndEmail($decoded->username,$decoded->email);
+                    if($getUser!=null && !empty($_POST['newPassword'])){                    
+                        $getUser->password = password_hash($_POST['newPassword'], PASSWORD_DEFAULT);
+                        $user->model->update($getUser); 
+                        $jwtTokenrecord->used=1;
+                        $jwtTokenrecord->comment=$jwtTokenrecord->comment ." Passwords was reset successfully on ".date("Y-m-d h:i:sa", time());
+                        $jwttoken->model->update($jwtTokenrecord) ;                    
+                        Output::createAlert("Password updated Successfully. You can now login with new password.");                        
+                    }
+                    else {//User does not exist
+                        Output::createAlert("User does not exist any more OR new password was empty");
+                    } 
+                }   
+                else {//$jwtTokenrecord->used!=1
+                    Output::createAlert("Link has already been used");
+                }    
+            }
+            else{Output::createAlert("Token Expired. Create new request.");}
+            
+        }//$jwttoken!=null
+     }
+
+
 }

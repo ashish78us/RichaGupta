@@ -171,6 +171,29 @@ function confirmDeleteCourse($id) {
       document.location = 'index.php?view=api/Course/delete/'+ $id ;
   }
 }
+
+function verifyPassword() {
+    console.log("Inside Verify Password");  
+    var pwd = document.getElementById("newPassword").value;  
+    //check empty password field  
+    if(pwd == "") {  
+       document.getElementById("message").innerHTML = "**Fill the password please!";  
+       return false;  
+    }  
+     
+   //minimum password length validation  
+    if(pwd.length < 4) {  
+       document.getElementById("message").innerHTML = "**Password length must be atleast 3 characters";  
+       return false;  
+    } 
+    var confirmPwd = document.getElementById("confirmNewPassword").value;
+    if (pwd!=confirmPwd){
+        //console.log("Inside confirm and new password check"); 
+        document.getElementById("message").innerHTML = "**New password and Confirm Password don't match"; 
+        return false;
+    }
+    
+  }  
  
 
  const search = document.querySelector('.input-group input'),

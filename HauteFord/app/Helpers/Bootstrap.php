@@ -1115,4 +1115,75 @@ class Bootstrap
             </div>';
     }
 
+    public static function changePassword($jwttoken){
+
+        return'<style>
+        *{
+          padding:0;
+          margin:0;
+        
+          font-family: sans-serif;
+        }
+        body{
+    background: url(image/background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    }
+    .reset-login-form{
+        width: 350px;
+        top:50%;
+        left:50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        color: rgb(8, 28, 8);
+    }
+    .reset-login-form h1{
+        font-size: 30px;
+        text-align: center;
+        text-transform: uppercase;
+        margin: 35px 0;
+        font-weight: bold;
+    }
+    .reset-login-form label{
+        font-size: 20px;
+        margin: 15px 0;
+    }
+    .reset-login-form input{
+        font-size: 16px;
+        width: 100%;
+        border: 0;
+        padding: 15px 10px;
+        outline: none;
+        border-radius: 5px;
+    }
+    .reset-login-form button{
+        font-size: 18px;
+        font-weight: bold;
+        margin: 20px;
+        padding: 15px 10px;
+        border: 0;
+        border-radius: 5px;
+        width: 50%;
+    }
+        </style>
+    
+    <form onsubmit ="return verifyPassword()" action="index.php?view=api/Jwttoken/resetPassword/'.$jwttoken.'"method="post"> 
+        <body>
+            <div class="reset-login-form">
+            <h1>Reset Password</h1>     
+        <label for="newPassword">New Password</label>
+        <input type="password" id="newPassword" name="newPassword" required>
+        <label for="confirmNewPassword">Confirm New Password</label>
+        <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+        <span id = "message" style="color:red"> </span> <br><br>
+        <button type="submit" value = "Submit">Submit</button>
+        
+        
+            </body>
+    </form>
+    
+    </div>
+    ';
+    }
+
 }
